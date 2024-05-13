@@ -1,0 +1,13 @@
+stdint.h(17): Warning! W138: No newline at end of file
+stdio.h(6): Warning! W138: No newline at end of file
+main.c(37): Warning! W131: No prototype found for function 'driverloader'
+main.c(38): Warning! W131: No prototype found for function '_status_'
+main.c(41): Warning! W131: No prototype found for function 'loop'
+main.c(36): Warning! W303: Parameter 'bootDrive' has been defined, but not referenced
+main.c(49): Warning! W131: No prototype found for function '_clear_'
+main.c(332): Warning! W200: 'ret1' has been referenced but never assigned a value
+main.c(393): Warning! W131: No prototype found for function 'serial_write_byte'
+main.c(434): Warning! W131: No prototype found for function 'keyboard_scan_code_to_ascii'
+main.c(740): Warning! W300: Nested comment found in comment started on line 607
+main.c(756): Warning! W131: No prototype found for function 'init8259APIC'
+main.c(35): Warning! W202: Symbol 'fb' has been defined, but not referenced
