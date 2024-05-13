@@ -1,6 +1,7 @@
 #include "stdint.h"
 #include "stdio.h"
 #include "system.h"
+#include "x86.h"
 #define FB_COMMAND_PORT         0x3D4
 #define FB_DATA_PORT            0x3D5
 
@@ -39,8 +40,9 @@ void _cdecl cstart_(uint16_t bootDrive){
 	//scancode = read_scan_code();
 	//keyboard_scan_code_to_ascii(scancode);
 	loop();
-	//irq_install();
-	//_asm("sti \r\n");
+	irq_install();
+	_asm("sti \r\n");
+	
 	for(;;);
 	
 };
@@ -505,7 +507,8 @@ void keyboard_scan_code_to_ascii(char scan_code)
 	
 	}else if (ascii[scan_code-1] == '9'){//page9
 		if(lastpage != 9){
-			//
+			// run holotape program
+			
 			lastpage = 9;
 		}
 	

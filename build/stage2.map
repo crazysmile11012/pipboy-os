@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Dec 25 2023 01:49:39 (64-bit)
 Copyright (c) 2002-2023 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       24/05/12 23:19:38
+Created on:       24/05/13 01:36:55
 Executable Image: /mnt/d/repos/pipboy-os/build/stage2.bin
 creating a RAW Binary Image executable
 
@@ -13,7 +13,7 @@ creating a RAW Binary Image executable
 Group                           Address              Size
 =====                           =======              ====
 
-DGROUP                          000016ae             00001385
+DGROUP                          000016b2             00001385
 
 
 
@@ -25,11 +25,11 @@ Segment                Class          Group          Address         Size
 =======                =====          =====          =======         ====
 
 _ENTRY                 CODE           AUTO           00000000        000001b4
-_TEXT                  CODE           AUTO           000001b4        000014fa
-CONST                  DATA           DGROUP         000016ae        000009f8
-CONST2                 DATA           DGROUP         000020a6        00000011
-_DATA                  DATA           DGROUP         000020b8        0000016f
-_BSS                   BSS            DGROUP         00002228        0000080b
+_TEXT                  CODE           AUTO           000001b4        000014fe
+CONST                  DATA           DGROUP         000016b2        000009f8
+CONST2                 DATA           DGROUP         000020aa        00000011
+_DATA                  DATA           DGROUP         000020bc        0000016f
+_BSS                   BSS            DGROUP         0000222c        0000080b
 
 
                         +----------------+
@@ -99,64 +99,64 @@ Module: /mnt/d/repos/pipboy-os/build/stage2/asm/x86.obj(x86.asm)
 Module: /mnt/d/repos/pipboy-os/build/stage2/c/idt.obj(/mnt/d/repos/pipboy-os/src/bootloader/stage2/idt.c)
 000001f5+      idt_set_gate_
 0000026c+      idt_install_
-00002228+      _idt
-00002a28       _idtp
+0000222c+      _idt
+00002a2c       _idtp
 Module: /mnt/d/repos/pipboy-os/build/stage2/c/irq.obj(/mnt/d/repos/pipboy-os/src/bootloader/stage2/irq.c)
 0000028d+      irq_install_handler_
 000002b2+      irq_uninstall_handler_
 000002d5+      irq_remap_
-00000342+      irq_install_
+00000342       irq_install_
 0000035a+      irq_handler_
-000020b8+      _irq_routines
+000020bc+      _irq_routines
 Module: /mnt/d/repos/pipboy-os/build/stage2/c/isrs.obj(/mnt/d/repos/pipboy-os/src/bootloader/stage2/isrs.c)
 000003b2+      isrs_install_
 000003c7+      fault_handler_
-000020d8+      _exception_messages
+000020dc+      _exception_messages
 Module: /mnt/d/repos/pipboy-os/build/stage2/c/main.obj(/mnt/d/repos/pipboy-os/src/bootloader/stage2/main.c)
-00002118+      _msg
+0000211c+      _msg
 00000407       _cstart_
-00000424+      _status__
-000004cf+      _weapons__
-0000057a+      _armour__
-00000625+      _clothes__
-000006d0+      _misc__
-0000077b+      _data__
-00000826+      _map__
-000008d1+      _clear__
-00000a36+      fb_write_cell_
-00000a7a+      fb_move_cursor_
-00000ac3+      inb_
-00000aed       outb_
-00000b0f+      fb_write_
-00000b6a+      serial_configure_baud_rate_
-00000bae+      serial_configure_line_
-00000bd2+      serial_configure_fifo_buffer_
-00000bf6+      serial_configure_modem_
-00000c1a+      serial_is_transmit_fifo_empty_
-00000c45+      serial_write_
-00000ca3+      serial_write_byte_
-00000cc7+      serial_configure_
-00000cfb+      segments_load_gdt_
-00000d10+      segments_load_registers_
-00000d25+      read_scan_code_
-00000d48+      loop_
-00000d70+      keyboard_scan_code_to_ascii_
-0000109a+      driverloader_
-000010b2+      usbtest_
-000010e5+      init8259APIC_
-00002125+      _lastpage
-00002127+      _lastchar
-00002a2c+      _i
-00002a2e+      _o
-00002a30+      _input
-00002a32+      _scancode
+00000428+      _status__
+000004d3+      _weapons__
+0000057e+      _armour__
+00000629+      _clothes__
+000006d4+      _misc__
+0000077f+      _data__
+0000082a+      _map__
+000008d5+      _clear__
+00000a3a+      fb_write_cell_
+00000a7e+      fb_move_cursor_
+00000ac7+      inb_
+00000af1       outb_
+00000b13+      fb_write_
+00000b6e+      serial_configure_baud_rate_
+00000bb2+      serial_configure_line_
+00000bd6+      serial_configure_fifo_buffer_
+00000bfa+      serial_configure_modem_
+00000c1e+      serial_is_transmit_fifo_empty_
+00000c49+      serial_write_
+00000ca7+      serial_write_byte_
+00000ccb+      serial_configure_
+00000cff+      segments_load_gdt_
+00000d14+      segments_load_registers_
+00000d29+      read_scan_code_
+00000d4c+      loop_
+00000d74+      keyboard_scan_code_to_ascii_
+0000109e+      driverloader_
+000010b6+      usbtest_
+000010e9+      init8259APIC_
+00002129+      _lastpage
+0000212b+      _lastchar
+00002a30+      _i
+00002a32+      _o
+00002a34+      _input
+00002a36+      _scancode
 Module: /mnt/d/repos/pipboy-os/build/stage2/c/stdio.obj(/mnt/d/repos/pipboy-os/src/bootloader/stage2/stdio.c)
-0000111c+      putc_
-00001143       puts_
-0000117a+      puts_f_
-000011b7       _printf
-0000143a+      printf_number_
-000020a6+      _g_HexChars
+00001120+      putc_
+00001147       puts_
+0000117e+      puts_f_
+000011bb       _printf
+0000143e+      printf_number_
+000020aa+      _g_HexChars
 
 
                         +---------------------+
@@ -173,31 +173,31 @@ main.asm        _ENTRY                CODE           00000000         000001b4
 x86.asm         _TEXT                 CODE           000001b4         00000041
 /mnt/d/repos/pipboy-os/src/bootloader/stage2/idt.c
                 _TEXT                 CODE           000001f5         00000098
-                CONST                 DATA           000016ae         00000000
-                CONST2                DATA           000020a6         00000000
-                _DATA                 DATA           000020b8         00000000
-                _BSS                  BSS            00002228         00000804
+                CONST                 DATA           000016b2         00000000
+                CONST2                DATA           000020aa         00000000
+                _DATA                 DATA           000020bc         00000000
+                _BSS                  BSS            0000222c         00000804
 /mnt/d/repos/pipboy-os/src/bootloader/stage2/irq.c
                 _TEXT                 CODE           0000028d         00000125
-                CONST                 DATA           000016ae         00000000
-                CONST2                DATA           000020a6         00000000
-                _DATA                 DATA           000020b8         00000020
+                CONST                 DATA           000016b2         00000000
+                CONST2                DATA           000020aa         00000000
+                _DATA                 DATA           000020bc         00000020
 /mnt/d/repos/pipboy-os/src/bootloader/stage2/isrs.c
                 _TEXT                 CODE           000003b2         00000055
-                CONST                 DATA           000016ae         00000158
-                CONST2                DATA           000020a6         00000000
-                _DATA                 DATA           000020d8         00000040
+                CONST                 DATA           000016b2         00000158
+                CONST2                DATA           000020aa         00000000
+                _DATA                 DATA           000020dc         00000040
 /mnt/d/repos/pipboy-os/src/bootloader/stage2/main.c
-                _TEXT                 CODE           00000407         00000d15
-                CONST                 DATA           00001806         000008a0
-                CONST2                DATA           000020a6         00000000
-                _DATA                 DATA           00002118         0000010f
-                _BSS                  BSS            00002a2c         00000007
+                _TEXT                 CODE           00000407         00000d19
+                CONST                 DATA           0000180a         000008a0
+                CONST2                DATA           000020aa         00000000
+                _DATA                 DATA           0000211c         0000010f
+                _BSS                  BSS            00002a30         00000007
 /mnt/d/repos/pipboy-os/src/bootloader/stage2/stdio.c
-                _TEXT                 CODE           0000111c         00000592
-                CONST                 DATA           000020a6         00000000
-                CONST2                DATA           000020a6         00000011
-                _DATA                 DATA           00002228         00000000
+                _TEXT                 CODE           00001120         00000592
+                CONST                 DATA           000020aa         00000000
+                CONST2                DATA           000020aa         00000011
+                _DATA                 DATA           0000222c         00000000
 Warning! W1014: stack segment not found
 
 
@@ -206,6 +206,6 @@ Warning! W1014: stack segment not found
                         +-----------------------+
 
 Stack size:  0200 (512.)
-Memory size:  2a33 (10803.)
+Memory size:  2a37 (10807.)
 Entry point address: 00000000
-Link time: 00:00.42
+Link time: 00:00.17
