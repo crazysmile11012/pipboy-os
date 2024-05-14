@@ -30,6 +30,9 @@ unsigned char mouse_cycle=0;     //unsigned char
 signed char mouse_byte[3];    //signed char
 signed char mouse_x=0;         //signed char
 signed char mouse_y=0;         //signed char
+char fbdyn[20][40] = {"test"};
+char statdyn[20][40] = {"bio data not implemented","follow on github for updates"};
+int iu;
 char scancode;
 int i;
 //int ret1;
@@ -56,26 +59,11 @@ void _status_(){
 	puts("=########==============================================================\r\n");
 	puts("I#STATUS#I WEAPONS I ARMOUR I CLOTHES I MISC I DATA I MAP I            \r\n");
 	puts("=########==============================================================\r\n");
-	puts(" BIOMETRIC DATA: NAN                                                   \r\n");
-	puts(" ERR: bio driver not found                                             \r\n");
-	puts(" contact 1-800-robco for support                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("====================================================================== \r\n");
-	puts("I CAPS: NAN I NAME: NULL I LEVEL: NAN                      I           \r\n");
+	
+	for (iu = 0; iu < 20; ++iu){
+		puts(statdyn[iu]);
+		puts("\r\n");
+	}
 }
 void _weapons_()
 {
@@ -84,26 +72,10 @@ void _weapons_()
 	puts("==========#########====================================================\r\n");
 	puts("I STATUS I#WEAPONS#I ARMOUR I CLOTHES I MISC I DATA I MAP I            \r\n");
 	puts("==========#########====================================================\r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("====================================================================== \r\n");
-	puts("I CAPS: NAN I NAME: NULL I LEVEL: NAN                      I           \r\n"); //nice
+	for (iu = 0; iu < 20; ++iu){
+		puts(fbdyn[iu]);
+		puts("\r\n");
+	}
 }
 void _armour_()
 {
@@ -112,26 +84,10 @@ void _armour_()
 	puts("====================########==========================================\r\n");
 	puts("I STATUS I WEAPONS I#ARMOUR#I CLOTHES I MISC I DATA I MAP I           \r\n");
 	puts("====================########==========================================\r\n");
-	puts("                                                                      \r\n");
-	puts("                                                                      \r\n");
-	puts("                                                                      \r\n");
-	puts("                                                                      \r\n");
-	puts("                                                                      \r\n");
-	puts("                                                                      \r\n");
-	puts("                                                                      \r\n");
-	puts("                                                                      \r\n");
-	puts("                                                                      \r\n");
-	puts("                                                                      \r\n");
-	puts("                                                                      \r\n");
-	puts("                                                                      \r\n");
-	puts("                                                                      \r\n");
-	puts("                                                                      \r\n");
-	puts("                                                                      \r\n");
-	puts("                                                                      \r\n");
-	puts("                                                                      \r\n");
-	puts("                                                                      \r\n");
-	puts("======================================================================\r\n");
-	puts("I CAPS: NAN I NAME: NULL I LEVEL: NAN                      I          \r\n"); //nice
+	for (iu = 0; iu < 20; ++iu){
+		puts(fbdyn[iu]);
+		puts("\r\n");
+	}
 }
 void _clothes_()
 {
@@ -140,26 +96,10 @@ void _clothes_()
 	puts("=============================#########=================================\r\n");
 	puts("I STATUS I WEAPONS I ARMOUR I#CLOTHES#I MISC I DATA I MAP I            \r\n");
 	puts("=============================#########=================================\r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("====================================================================== \r\n");
-	puts("I CAPS: NAN I NAME: NULL I LEVEL: NAN                    I             \r\n"); //nice
+	for (iu = 0; iu < 20; ++iu){
+		puts(fbdyn[iu]);
+		puts("\r\n");
+	}
 }
 void _misc_()
 {
@@ -168,26 +108,10 @@ void _misc_()
 	puts("=======================================######==========================\r\n");
 	puts("I STATUS I WEAPONS I ARMOUR I CLOTHES I#MISC#I DATA I MAP I            \r\n");
 	puts("=======================================######==========================\r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("====================================================================== \r\n");
-	puts("I CAPS: NAN I NAME: NULL I LEVEL: NAN                     I            \r\n"); //nice
+	for (iu = 0; iu < 20; ++iu){
+		puts(fbdyn[iu]);
+		puts("\r\n");
+	}
 }
 void _data_()
 {
@@ -196,26 +120,10 @@ void _data_()
 	puts("==============================================######===================\r\n");
 	puts("I STATUS I=WEAPONS I ARMOUR I CLOTHES I MISC I#DATA#I MAP I            \r\n");
 	puts("==============================================######===================\r\n");
-	puts("NULL                                                                   \r\n");
-	puts("MISC QUESTS V                                                          \r\n");
-	puts("NULL                                                                   \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("====================================================================== \r\n");
-	puts("I CAPS: NAN I NAME: NULL I LEVEL: NAN                      I           \r\n"); //nice
+	for (iu = 0; iu < 20; ++iu){
+		puts(fbdyn[iu]);
+		puts("\r\n");
+	}
 }
 void _map_()
 {
@@ -224,26 +132,10 @@ void _map_()
 	puts("=====================================================#####=============\r\n");
 	puts("I STATUS I WEAPONS I ARMOUR I CLOTHES I MISC I DATA I#MAP#I            \r\n");
 	puts("=====================================================#####=============\r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                   MAPDATA NOT FOUND FOR AREA                          \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("                                                                       \r\n");
-	puts("====================================================================== \r\n");
-	puts("I CAPS: NAN I NAME: NULL I LEVEL: NAN                      I           \r\n"); //nice
+	for (iu = 0; iu < 20; ++iu){
+		puts(fbdyn[iu]);
+		puts("\r\n");
+	}
 	
 	
 }
@@ -615,8 +507,8 @@ void keyboard_scan_code_to_ascii(char scan_code)
 	
 }
 
-//Mouse.inc by SANiK
-//License: Use as you wish, except to cause damage
+//Mouse.inc by SANiK modified by crazysmile11012 for nateweb os
+//License: Use as you wish, except to cause damage :3
 
 
 //Mouse functions

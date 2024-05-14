@@ -1,20 +1,20 @@
 stdint.h(17): Warning! W138: No newline at end of file
 stdio.h(6): Warning! W138: No newline at end of file
 x86.h(4): Warning! W138: No newline at end of file
-main.c(41): Warning! W131: No prototype found for function 'driverloader'
-main.c(42): Warning! W131: No prototype found for function '_status_'
-main.c(43): Warning! W131: No prototype found for function 'read_scan_code'
-main.c(44): Warning! W131: No prototype found for function 'keyboard_scan_code_to_ascii'
-main.c(45): Warning! W131: No prototype found for function 'loop'
-main.c(40): Warning! W303: Parameter 'bootDrive' has been defined, but not referenced
-main.c(55): Warning! W131: No prototype found for function '_clear_'
-main.c(338): Warning! W200: 'ret1' has been referenced but never assigned a value
-main.c(399): Warning! W131: No prototype found for function 'serial_write_byte'
-main.c(630): Warning! W303: Parameter 'a_r' has been defined, but not referenced
-main.c(653): Warning! W106: Constant out of range - truncated
-main.c(653): Note! I2003: source conversion type is 'long'
-main.c(653): Note! I2004: target conversion type is 'unsigned int'
-main.c(772): Warning! W131: No prototype found for function 'init8259APIC'
-main.c(725): Warning! W308: The function 'irq_install' without prototyped parameters called
-main.c(725): Note! I2002: 'irq_install' defined in: system.h(24)
-main.c(39): Warning! W202: Symbol 'fb' has been defined, but not referenced
+main.c(44): Warning! W131: No prototype found for function 'driverloader'
+main.c(45): Warning! W131: No prototype found for function '_status_'
+main.c(46): Warning! W131: No prototype found for function 'read_scan_code'
+main.c(47): Warning! W131: No prototype found for function 'keyboard_scan_code_to_ascii'
+main.c(48): Warning! W131: No prototype found for function 'loop'
+main.c(43): Warning! W303: Parameter 'bootDrive' has been defined, but not referenced
+main.c(58): Warning! W131: No prototype found for function '_clear_'
+main.c(230): Warning! W200: 'ret1' has been referenced but never assigned a value
+main.c(291): Warning! W131: No prototype found for function 'serial_write_byte'
+main.c(522): Warning! W303: Parameter 'a_r' has been defined, but not referenced
+main.c(545): Warning! W106: Constant out of range - truncated
+main.c(545): Note! I2003: source conversion type is 'long'
+main.c(545): Note! I2004: target conversion type is 'unsigned int'
+main.c(664): Warning! W131: No prototype found for function 'init8259APIC'
+main.c(617): Warning! W308: The function 'irq_install' without prototyped parameters called
+main.c(617): Note! I2002: 'irq_install' defined in: system.h(24)
+main.c(42): Warning! W202: Symbol 'fb' has been defined, but not referenced
