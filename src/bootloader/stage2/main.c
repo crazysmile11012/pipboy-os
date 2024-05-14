@@ -26,11 +26,86 @@
 #define MIC_ADDR 0x0
 #define GPS_X_ADDR 0x0
 #define GPS_Y_ADDR 0x0
+//fat 12 vars
+volatile bool ReceivedIRQ = false;
+enum FloppyRegisters
+{
+   STATUS_REGISTER_A                = 0x3F0, // read-only
+   STATUS_REGISTER_B                = 0x3F1, // read-only
+   DIGITAL_OUTPUT_REGISTER          = 0x3F2,
+   TAPE_DRIVE_REGISTER              = 0x3F3,
+   MAIN_STATUS_REGISTER             = 0x3F4, // read-only
+   DATARATE_SELECT_REGISTER         = 0x3F4, // write-only
+   DATA_FIFO                        = 0x3F5,
+   DIGITAL_INPUT_REGISTER           = 0x3F7, // read-only
+   CONFIGURATION_CONTROL_REGISTER   = 0x3F7  // write-only
+};
+enum FloppyCommands
+{
+   READ_TRACK =                 2,	// generates IRQ6
+   SPECIFY =                    3,      // * set drive parameters
+   SENSE_DRIVE_STATUS =         4,
+   WRITE_DATA =                 5,      // * write to the disk
+   READ_DATA =                  6,      // * read from the disk
+   RECALIBRATE =                7,      // * seek to cylinder 0
+   SENSE_INTERRUPT =            8,      // * ack IRQ6, get status of last command
+   WRITE_DELETED_DATA =         9,
+   READ_ID =                    10,	// generates IRQ6
+   READ_DELETED_DATA =          12,
+   FORMAT_TRACK =               13,     // *
+   DUMPREG =                    14,
+   SEEK =                       15,     // * seek both heads to cylinder X
+   VERSION =                    16,	// * used during initialization, once
+   SCAN_EQUAL =                 17,
+   PERPENDICULAR_MODE =         18,	// * used during initialization, once, maybe
+   CONFIGURE =                  19,     // * set controller parameters
+   LOCK =                       20,     // * protect controller params from a reset
+   VERIFY =                     22,
+   SCAN_LOW_OR_EQUAL =          25,
+   SCAN_HIGH_OR_EQUAL =         29
+};
+/*
+ FAT 12 VARIABLES / HEADER
+
+
+*/
+char oem[] = "MSWIN4.1";
+int bps = 512;//bytes per sector
+int spc = 1;//sector per cluster
+int rs = 1;//reserved sectors
+char fc = 2;//fat count
+int dec = 0xE0; //dir entries count
+int ts = 2880; //total sectors
+int mdt = 0x0f0; //media type (set to floppy 3.5'')
+int spf = 9; //sectors/fat
+int spt = 18; //sectors per track
+int heads = 2; //drive heads
+int hs = 0; // hidden sectors
+int lsc =0;//large sector count
+
+//extended boot record 
+/*
+ EXTENDED BOOT RECORD
+
+
+
+*/
+
+int drn = 0; //drive number
+int sig = 0x29;//signiture
+char ser[4][5] = {0x12,0x34,0x56,0x78};//serial number (vol id)
+char vl[] = "nateweb os "; //vol label 11 bytes padded with space
+char sysid[] = "FAT12   "; //filesystem id 8 bytes
+//end fat 12 vars
+/*
+  FAT FILE SYSTEM HEADER OVER
+
+*/
 unsigned char mouse_cycle=0;     //unsigned char
 signed char mouse_byte[3];    //signed char
 signed char mouse_x=0;         //signed char
 signed char mouse_y=0;         //signed char
-char fbdyn[20][40] = {"test"};
+char fbdyn[20][40] = {"test menu item","#TEST BUTTON#"};
 char statdyn[20][40] = {"bio data not implemented","follow on github for updates"};
 int iu;
 char scancode;
@@ -410,7 +485,8 @@ void keyboard_scan_code_to_ascii(char scan_code)
 	}else if (ascii[scan_code-1] == '9'){//page9
 		if(lastpage != 9){
 			// run holotape program
-			
+			_clear_();
+			puts("fat 12 driver is a wip");
 			
 			lastpage = 9;
 		}
@@ -657,6 +733,7 @@ void driverloader(){
 	init8259APIC();
 	//mouse driver disabled for the time being
 	//mouse_install();//install mouse driver @ irq 12
+	floppy_install(0);//install floppy(0) driver @ irq 6
 };
 void usbtest(){
 	unsigned short inputport = 0x0001;
@@ -687,5 +764,96 @@ void init8259APIC(){
 	__asm("	out 0x21, al \r\n");
 	__asm("	out 0xA1, al \r\n");
 };
+int st0;
+int cyl;
+static const char * drive_types[8] = {
+    "none",
+    "360kB 5.25\"",
+    "1.2MB 5.25\"",
+    "720kB 3.5\"",
 
+    "1.44MB 3.5\"",
+    "2.88MB 3.5\"",
+    "unknown type",
+    "unknown type"
+};
+enum { floppy_motor_off = 0, floppy_motor_on, floppy_motor_wait };
+static volatile int floppy_motor_ticks = 0;
+static volatile int floppy_motor_state = 0;
+void floppy_handler(struct regs *a_r){
+	ReceivedIRQ = true;
+}
+void floppy_install(int devno){
+	irq_install(6,floppy_handler);
+	
+}
+void floppy_write_cmd(int base, char cmd) {
+    int i; // do timeout, 60 seconds
+	char d;
+    for(i = 0; i < 600; i++) {
+        //timer_sleep(1); // sleep 10 ms
+        if(0x80 & inb(base+MAIN_STATUS_REGISTER)) {
+            outb(base+DATA_FIFO, cmd);
+        }
+    }
+   // panic("floppy_write_cmd: timeout");   
+}
+unsigned char floppy_read_data(int base) {
 
+    int i; // do timeout, 60 seconds
+    for(i = 0; i < 600; i++) {
+        //timer_sleep(1); // sleep 10 ms
+        if(0x80 & inb(base+MAIN_STATUS_REGISTER)) {
+            return inb(base+DATA_FIFO);
+        }
+    }
+    //panic("floppy_read_data: timeout");
+    return 0; // not reached
+}
+int floppy_calibrate(int base){
+	int i; st0,cyl = -1;
+	floppy_motor(base,floppy_motor_on);
+	for(i = 0; i< 10; i++){
+		floppy_write_cmd(base, RECALIBRATE);
+		floppy_write_cmd(base, 0);
+		while(ReceivedIRQ != true){
+			
+		}
+		floppy_check_irq(base,&st0,&cyl);
+		if(st0 & 0xc0){
+			static const char * status[] = {0, "error", "invalid", "drive"};
+			printf("floppy_cal: status = %s\n",status[st0 >> 6]);
+			continue;
+		}
+		if(!cyl){
+			floppy_motor(base, floppy_motor_off);
+			return 0;
+		}
+	}
+	printf("floppy cal 10 retrys exhausted\n");
+	floppy_motor(base, floppy_motor_off);
+	return -1;
+}
+void floppy_motor(int base, int toggle){
+	if(toggle){
+		if(!floppy_motor_state){
+			outb(base+DIGITAL_OUTPUT_REGISTER,0x1c);
+		}
+		floppy_motor_state = floppy_motor_on;
+	}else{
+		if(floppy_motor_state == floppy_motor_wait){
+			printf("floppy motor already running \n");
+		}
+		floppy_motor_ticks = 300;
+		floppy_motor_state = floppy_motor_wait;
+	}
+}
+void floppy_motor_stop(int base){
+	outb(base+DIGITAL_OUTPUT_REGISTER,0x0c);
+	floppy_motor_state = floppy_motor_off;
+}
+void floppy_check_irq(int base, int *st0, int *cyl){
+	floppy_write_cmd(base, SENSE_INTERRUPT);
+	*st0 = floppy_read_data(base);
+	*cyl = floppy_read_data(base);
+}

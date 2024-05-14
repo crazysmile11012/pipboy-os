@@ -132,6 +132,7 @@ start:
     mov [stage2_cluster], ax
 
     ; load FAT from disk into memory
+	; ramdisk :)
     mov ax, [bdb_reserved_sectors]
     mov bx, buffer
     mov cl, [bdb_sectors_per_fat]
