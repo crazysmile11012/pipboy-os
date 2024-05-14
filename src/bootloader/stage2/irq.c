@@ -39,8 +39,7 @@ void irq_uninstall_handler(int irq)
 {
  irq_routines[irq] = 0;
 };
-// Here we remap our IRQs (0-15 to 32-47) as explained in the
-// tutorial.
+// Here we remap our IRQs (0-15 to 32-47)
 void irq_remap(void)
 {
  outb(0x20, 0x11);

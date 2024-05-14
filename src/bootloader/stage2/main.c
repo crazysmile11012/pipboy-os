@@ -26,7 +26,10 @@
 #define MIC_ADDR 0x0
 #define GPS_X_ADDR 0x0
 #define GPS_Y_ADDR 0x0
-
+unsigned char mouse_cycle=0;     //unsigned char
+signed char mouse_byte[3];    //signed char
+signed char mouse_x=0;         //signed char
+signed char mouse_y=0;         //signed char
 char scancode;
 int i;
 //int ret1;
@@ -37,10 +40,10 @@ static char *fb = (char *)FB_BASE_ADDRESS;
 void _cdecl cstart_(uint16_t bootDrive){
 	driverloader();
 	_status_();
-	//scancode = read_scan_code();
-	//keyboard_scan_code_to_ascii(scancode);
+	scancode = read_scan_code();
+	keyboard_scan_code_to_ascii(scancode);
 	loop();
-	irq_install();
+	//irq_install();
 	_asm("sti \r\n");
 	
 	for(;;);
@@ -421,12 +424,17 @@ int read_scan_code(void)
     }
 
 void loop(){
+	char scancode;//declare vars out of loop so it does not flood the ram
 	while(true){
-		char scancode;//declare vars out of loop so it does not flood the ram
+		
 		//watch out for memory leaks here :)
 		scancode = read_scan_code();
 		//puts(scancode);
-	
+		
+		//printf(mouse_x);
+		//puts("\r\n");
+		//printf(mouse_y);
+		//puts("\r\n");
 		keyboard_scan_code_to_ascii(scancode);
 	}
 	
@@ -449,6 +457,8 @@ void keyboard_scan_code_to_ascii(char scan_code)
 		'8', '9', '-', '4', '5', '6', '+', '1',		// 72 - 79
 		'2', '3', '0', '.'	// 80 - 83
 	};
+	
+
 	
 	if (ascii[scan_code-1] == '\0'){
 		//do nothing
@@ -508,6 +518,7 @@ void keyboard_scan_code_to_ascii(char scan_code)
 	}else if (ascii[scan_code-1] == '9'){//page9
 		if(lastpage != 9){
 			// run holotape program
+			
 			
 			lastpage = 9;
 		}
@@ -599,15 +610,14 @@ void keyboard_scan_code_to_ascii(char scan_code)
 		if(lastpage == 7){
 			
 		}
+	
 	}
+	
 }
-/*
+
 //Mouse.inc by SANiK
 //License: Use as you wish, except to cause damage
-unsigned char mouse_cycle=0;     //unsigned char
-signed char mouse_byte[3];    //signed char
-signed char mouse_x=0;         //signed char
-signed char mouse_y=0;         //signed char
+
 
 //Mouse functions
 void mouse_handler(struct regs *a_r) //struct regs *a_r (not used but just there)
@@ -705,6 +715,8 @@ void mouse_install()
 
   //Setup the mouse handler
   //irq_install_handler(12, mouse_handler);
+  irq_install(12,mouse_handler);
+  //init8259APIC();
 }
 void *memcpy(void *dest, const void *src, size_t count)
 {
@@ -734,8 +746,8 @@ size_t strlen(const char *str){
  return retval;
 };
 // Reading from IO ports
-/*
 
+/*
 unsigned char inportb (unsigned short _port)
 {
  unsigned char rv;
@@ -751,7 +763,8 @@ void driverloader(){
 	//put your driver function calls here
 	//usbtest();
 	init8259APIC();
-	
+	//mouse driver disabled for the time being
+	//mouse_install();//install mouse driver @ irq 12
 };
 void usbtest(){
 	unsigned short inputport = 0x0001;
@@ -782,3 +795,5 @@ void init8259APIC(){
 	__asm("	out 0x21, al \r\n");
 	__asm("	out 0xA1, al \r\n");
 };
+
+
