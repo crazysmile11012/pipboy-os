@@ -1,4 +1,10 @@
 bits 16
+system_timer_fractions:  resd 1          ; Fractions of 1 ms since timer initialized
+system_timer_ms:         resd 1          ; Number of whole ms since timer initialized
+IRQ0_fractions:          resd 1          ; Fractions of 1 ms between IRQs
+IRQ0_ms:                 resd 1          ; Number of whole ms between IRQs
+IRQ0_frequency:          resd 1          ; Actual frequency of PIT
+PIT_reload_value:        resw 1          ; Current PIT reload value
 
 section _TEXT class=CODE
 
@@ -75,3 +81,6 @@ _x86_Video_WriteCharTeletype:
     mov sp, bp
     pop bp
     ret
+global _panic
+_panic:
+	hlt

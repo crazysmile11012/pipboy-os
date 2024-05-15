@@ -2,9 +2,10 @@
 #include "stdio.h"
 #include "system.h"
 #include "x86.h"
+volatile uint32_t CountDown;
 #define FB_COMMAND_PORT         0x3D4
 #define FB_DATA_PORT            0x3D5
-
+#define COUNTDOWN_DONE_MSG 1
 /* The I/O port commands */
 #define FB_HIGH_BYTE_COMMAND    14
 #define FB_LOW_BYTE_COMMAND     15
@@ -28,6 +29,8 @@
 #define GPS_Y_ADDR 0x0
 //fat 12 vars
 volatile bool ReceivedIRQ = false;
+
+
 enum FloppyRegisters
 {
    STATUS_REGISTER_A                = 0x3F0, // read-only
@@ -106,6 +109,7 @@ signed char mouse_byte[3];    //signed char
 signed char mouse_x=0;         //signed char
 signed char mouse_y=0;         //signed char
 char fbdyn[20][40] = {"test menu item","#TEST BUTTON#"};
+char wepdyn[20][40] = {"none","debug weapon"};
 char statdyn[20][40] = {"bio data not implemented","follow on github for updates"};
 int iu;
 char scancode;
@@ -148,7 +152,7 @@ void _weapons_()
 	puts("I STATUS I#WEAPONS#I ARMOUR I CLOTHES I MISC I DATA I MAP I            \r\n");
 	puts("==========#########====================================================\r\n");
 	for (iu = 0; iu < 20; ++iu){
-		puts(fbdyn[iu]);
+		puts(wepdyn[iu]);
 		puts("\r\n");
 	}
 }
@@ -487,8 +491,9 @@ void keyboard_scan_code_to_ascii(char scan_code)
 			// run holotape program
 			_clear_();
 			puts("fat 12 driver is a wip");
-			
+			shortbeep();
 			lastpage = 9;
+			
 		}
 	
 	}else{
@@ -519,7 +524,6 @@ void keyboard_scan_code_to_ascii(char scan_code)
 					lastchar = 'r';
 					_weapons_();
 					puts("drop");
-					
 				}
 			}else if(ascii[scan_code-1]=='e'){
 				//stim
@@ -565,7 +569,6 @@ void keyboard_scan_code_to_ascii(char scan_code)
 					lastchar = 'e';
 					_clothes_();
 					puts("equip");
-					
 				}
 			}
 		}
@@ -780,11 +783,13 @@ static const char * drive_types[8] = {
 enum { floppy_motor_off = 0, floppy_motor_on, floppy_motor_wait };
 static volatile int floppy_motor_ticks = 0;
 static volatile int floppy_motor_state = 0;
+int base = 0x03f0;
 void floppy_handler(struct regs *a_r){
 	ReceivedIRQ = true;
 }
 void floppy_install(int devno){
 	irq_install(6,floppy_handler);
+	floppy_calibrate(0x03f0);
 	
 }
 void floppy_write_cmd(int base, char cmd) {
@@ -796,7 +801,6 @@ void floppy_write_cmd(int base, char cmd) {
             outb(base+DATA_FIFO, cmd);
         }
     }
-   // panic("floppy_write_cmd: timeout");   
 }
 unsigned char floppy_read_data(int base) {
 
@@ -807,7 +811,7 @@ unsigned char floppy_read_data(int base) {
             return inb(base+DATA_FIFO);
         }
     }
-    //panic("floppy_read_data: timeout");
+    panic(); // im being lazy again and insted of a propper kernel panic it just halts the cpu :3
     return 0; // not reached
 }
 int floppy_calibrate(int base){
@@ -816,13 +820,13 @@ int floppy_calibrate(int base){
 	for(i = 0; i< 10; i++){
 		floppy_write_cmd(base, RECALIBRATE);
 		floppy_write_cmd(base, 0);
-		while(ReceivedIRQ != true){
-			
+		if(ReceivedIRQ == false){
+			printf("floppy error irq");
 		}
 		floppy_check_irq(base,&st0,&cyl);
 		if(st0 & 0xc0){
 			static const char * status[] = {0, "error", "invalid", "drive"};
-			printf("floppy_cal: status = %s\n",status[st0 >> 6]);
+			printf("floppy_cal: status = %s\r\n",status[st0 >> 6]);
 			continue;
 		}
 		if(!cyl){
@@ -830,7 +834,7 @@ int floppy_calibrate(int base){
 			return 0;
 		}
 	}
-	printf("floppy cal 10 retrys exhausted\n");
+	printf("floppy cal 10 retrys exhausted\r\n");
 	floppy_motor(base, floppy_motor_off);
 	return -1;
 }
@@ -842,7 +846,7 @@ void floppy_motor(int base, int toggle){
 		floppy_motor_state = floppy_motor_on;
 	}else{
 		if(floppy_motor_state == floppy_motor_wait){
-			printf("floppy motor already running \n");
+			printf("floppy motor already running \r\n");
 		}
 		floppy_motor_ticks = 300;
 		floppy_motor_state = floppy_motor_wait;
@@ -851,9 +855,94 @@ void floppy_motor(int base, int toggle){
 void floppy_motor_stop(int base){
 	outb(base+DIGITAL_OUTPUT_REGISTER,0x0c);
 	floppy_motor_state = floppy_motor_off;
+	printf("floppy motor stopped\r\n");
 }
 void floppy_check_irq(int base, int *st0, int *cyl){
 	floppy_write_cmd(base, SENSE_INTERRUPT);
 	*st0 = floppy_read_data(base);
 	*cyl = floppy_read_data(base);
 }
+int floppy_seek(int base, unsigned cyli, int head){
+	unsigned i, st0, cyl = -1;
+	floppy_motor(base, floppy_motor_on);
+	for (i=0; i < 10; i++){
+		floppy_write_cmd(base,SEEK);
+		floppy_write_cmd(base, head<<2);
+		floppy_write_cmd(base, cyli);
+		floppy_check_irq(base,&st0,&cyl);
+		if(st0 & 0xc0){
+			static const char * status[] = {"normal", "error", "invalid", "drive"};
+			printf("floppy_seek: status = %s\n", status[st0 >> 6]);
+			continue;
+		}
+		if(cyl == cyli){
+			floppy_motor(base,floppy_motor_off);
+			return 0; 
+		}
+	}
+	floppy_motor(base, floppy_motor_off);
+}
+
+/*
+	audio / sound card driver this is a HUGE wip, sorry audiofiles you will experiance earrape
+	if you cultured indviduals want to make it sound good feel free to contribute your obviously 
+	supperiour hearing :3
+
+  _ __ ___  _   _ ___(_) ___    \-------\
+ | '_ ` _ \| | | / __| |/ __|   \       \
+ | | | | | | |_| \__ \ | (__    \       \
+ |_| |_| |_|\__,_|___/_|\___|   ()     ()
+                        DRIVER :3
+
+ spent to long on this btw
+*/
+
+
+
+void shortbeep(){
+	play_sound(1000);
+	for(i=1;i<10000; i++){}
+	audiostop();
+}
+void beeptone(int freq){
+	play_sound(freq);
+	for(i=1;i<10000; i++){}
+	audiostop();
+}
+void tone(int freq){
+	play_sound(freq);
+}
+void longbeep(){
+	
+	play_sound(1000);
+	for(i=1;i<20000; i++){}
+	audiostop();
+}
+void audiostop(){
+	int tmp = inb(0x61) & 0xFC;
+ 	outb(0x61, tmp);
+}
+void playsoundbyte(){ // takes in a array and plays each hex value for time specified in the bitrate arg
+	
+}
+static void play_sound(int nFrequence) {
+ 	uint32_t Div;
+ 	uint8_t tmp;
+	uint32_t rem;
+	unsigned long long num = 1193180;
+        //Set the PIT to the desired frequency
+ 	x86_div64_32(num, nFrequence, &num, &rem);
+	Div = num;
+ 	outb(0x43, 0xb6);
+	
+ 	outb(0x42, (uint8_t) (Div) );
+ 	outb(0x42, (uint8_t) (Div >> 8));
+	
+        //And play the sound using the PC speaker
+ 	tmp = inb(0x61);
+	
+  	if (tmp != (tmp | 3)) {
+ 		outb(0x61, tmp | 3);
+ 	}
+	
+ }
