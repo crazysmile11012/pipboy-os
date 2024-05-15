@@ -1,6 +1,4 @@
-stdint.h(17): Warning! W138: No newline at end of file
 idt.c(39): Warning! W115: &array may not produce intended result
 idt.c(39): Warning! W102: Type mismatch (warning)
 idt.c(39): Note! I2003: source conversion type is 'struct idt_entry (*)[256]'
 idt.c(39): Note! I2004: target conversion type is 'unsigned int'
-idt.c(45): Warning! W138: No newline at end of file

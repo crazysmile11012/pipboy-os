@@ -84,3 +84,9 @@ _x86_Video_WriteCharTeletype:
 global _panic
 _panic:
 	hlt
+global _debugasmfunc
+_debugasmfunc:
+	push ax				; push reg to ram
+	push bx
+	pop ax 				; pop reg from ram
+	pop bx
