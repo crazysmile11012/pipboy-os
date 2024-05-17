@@ -806,7 +806,7 @@ unsigned char floppy_read_data(int base) {
 
     int i; // do timeout, 60 seconds
     for(i = 0; i < 600; i++) {
-        //timer_sleep(1); // sleep 10 ms
+        //sleep for 10 ms
         if(0x80 & inb(base+MAIN_STATUS_REGISTER)) {
             return inb(base+DATA_FIFO);
         }
@@ -882,6 +882,9 @@ int floppy_seek(int base, unsigned cyli, int head){
 	}
 	floppy_motor(base, floppy_motor_off);
 }
+void floppy_clean(){
+	floppy_calibrate(base);
+}
 
 /*
 	audio / sound card driver this is a HUGE wip, sorry audiofiles you will experiance earrape
@@ -913,7 +916,6 @@ void tone(int freq){
 	play_sound(freq);
 }
 void longbeep(){
-	
 	play_sound(1000);
 	for(i=1;i<20000; i++){}
 	audiostop();
@@ -923,7 +925,7 @@ void audiostop(){
  	outb(0x61, tmp);
 }
 void playsoundbyte(){ // takes in a array and plays each hex value for time specified in the bitrate arg
-	
+	//to be implemented
 }
 static void play_sound(int nFrequence) {
  	uint32_t Div;
@@ -946,3 +948,61 @@ static void play_sound(int nFrequence) {
  	}
 	
  }
+ 
+ 
+ 
+ 
+ 
+ /*
+ 
+ TIME AND CLOCK FUNCTION DRIVER
+ 
+ */
+void timer_handler(struct regs *a_r){
+	
+ }
+void timer_install(){
+	irq_install(0,timer_handler);
+ }
+ 
+ void timer_sleep_cycles(int waits){
+	//waits == number of clock cycles to sleeps
+	for(i =0; i > waits; i++){
+		//do nothing just pause the cpu 
+		__asm("	nop \r\n");
+	 }
+ }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

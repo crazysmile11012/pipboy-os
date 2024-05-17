@@ -28,12 +28,15 @@ main.c(896): Note! I2003: source conversion type is 'unsigned int *'
 main.c(896): Note! I2004: target conversion type is 'int *'
 main.c(896): Note! I2002: 'floppy_check_irq' defined in: main.c(884)
 main.c(908): Warning! W107: Missing return value for function 'floppy_seek'
-main.c(927): Warning! W131: No prototype found for function 'play_sound'
-main.c(929): Warning! W131: No prototype found for function 'audiostop'
-main.c(972): Warning! W138: No newline at end of file
+main.c(930): Warning! W131: No prototype found for function 'play_sound'
+main.c(932): Warning! W131: No prototype found for function 'audiostop'
+main.c(985): Warning! W303: Parameter 'a_r' has been defined, but not referenced
+main.c(1033): Warning! W138: No newline at end of file
 main.c(696): Warning! W308: The function 'irq_install' without prototyped parameters called
 main.c(696): Note! I2002: 'irq_install' defined in: system.h(24)
 main.c(815): Warning! W308: The function 'irq_install' without prototyped parameters called
 main.c(815): Note! I2002: 'irq_install' defined in: system.h(24)
+main.c(989): Warning! W308: The function 'irq_install' without prototyped parameters called
+main.c(989): Note! I2002: 'irq_install' defined in: system.h(24)
 main.c(121): Warning! W202: Symbol 'fb' has been defined, but not referenced
 main.c(796): Warning! W202: Symbol 'drive_types' has been defined, but not referenced
