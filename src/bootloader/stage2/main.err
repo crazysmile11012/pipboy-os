@@ -1,42 +1,50 @@
-main.c(123): Warning! W131: No prototype found for function 'driverloader'
-main.c(124): Warning! W131: No prototype found for function '_status_'
-main.c(125): Warning! W131: No prototype found for function 'read_scan_code'
-main.c(126): Warning! W131: No prototype found for function 'keyboard_scan_code_to_ascii'
-main.c(127): Warning! W131: No prototype found for function 'loop'
-main.c(122): Warning! W303: Parameter 'bootDrive' has been defined, but not referenced
-main.c(137): Warning! W131: No prototype found for function '_clear_'
-main.c(309): Warning! W200: 'ret1' has been referenced but never assigned a value
-main.c(370): Warning! W131: No prototype found for function 'serial_write_byte'
-main.c(501): Warning! W131: No prototype found for function 'shortbeep'
-main.c(601): Warning! W303: Parameter 'a_r' has been defined, but not referenced
-main.c(624): Warning! W106: Constant out of range - truncated
-main.c(624): Note! I2003: source conversion type is 'long'
-main.c(624): Note! I2004: target conversion type is 'unsigned int'
-main.c(743): Warning! W131: No prototype found for function 'init8259APIC'
-main.c(746): Warning! W131: No prototype found for function 'floppy_install'
-main.c(811): Warning! W303: Parameter 'a_r' has been defined, but not referenced
-main.c(816): Warning! W131: No prototype found for function 'floppy_calibrate'
-main.c(814): Warning! W303: Parameter 'devno' has been defined, but not referenced
-main.c(821): Warning! W202: Symbol 'd' has been defined, but not referenced
-main.c(843): Warning! W131: No prototype found for function 'floppy_motor'
-main.c(850): Warning! W131: No prototype found for function 'floppy_check_irq'
-main.c(896): Warning! E1181: Parameter 2, sign specifier mismatch
-main.c(896): Note! I2003: source conversion type is 'unsigned int *'
-main.c(896): Note! I2004: target conversion type is 'int *'
-main.c(896): Warning! E1181: Parameter 3, sign specifier mismatch
-main.c(896): Note! I2003: source conversion type is 'unsigned int *'
-main.c(896): Note! I2004: target conversion type is 'int *'
-main.c(896): Note! I2002: 'floppy_check_irq' defined in: main.c(884)
-main.c(908): Warning! W107: Missing return value for function 'floppy_seek'
-main.c(930): Warning! W131: No prototype found for function 'play_sound'
-main.c(932): Warning! W131: No prototype found for function 'audiostop'
-main.c(985): Warning! W303: Parameter 'a_r' has been defined, but not referenced
-main.c(1033): Warning! W138: No newline at end of file
-main.c(696): Warning! W308: The function 'irq_install' without prototyped parameters called
-main.c(696): Note! I2002: 'irq_install' defined in: system.h(24)
-main.c(815): Warning! W308: The function 'irq_install' without prototyped parameters called
-main.c(815): Note! I2002: 'irq_install' defined in: system.h(24)
-main.c(989): Warning! W308: The function 'irq_install' without prototyped parameters called
-main.c(989): Note! I2002: 'irq_install' defined in: system.h(24)
-main.c(121): Warning! W202: Symbol 'fb' has been defined, but not referenced
-main.c(796): Warning! W202: Symbol 'drive_types' has been defined, but not referenced
+main.c(124): Warning! W131: No prototype found for function 'driverloader'
+main.c(125): Warning! W131: No prototype found for function '_status_'
+main.c(126): Warning! W131: No prototype found for function 'read_scan_code'
+main.c(127): Warning! W131: No prototype found for function 'keyboard_scan_code_to_ascii'
+main.c(128): Warning! W131: No prototype found for function 'loop'
+main.c(123): Warning! W303: Parameter 'bootDrive' has been defined, but not referenced
+main.c(138): Warning! W131: No prototype found for function '_clear_'
+main.c(310): Warning! W200: 'ret1' has been referenced but never assigned a value
+main.c(371): Warning! W131: No prototype found for function 'serial_write_byte'
+main.c(502): Warning! W131: No prototype found for function 'shortbeep'
+main.c(602): Warning! W303: Parameter 'a_r' has been defined, but not referenced
+main.c(625): Warning! W106: Constant out of range - truncated
+main.c(625): Note! I2003: source conversion type is 'long'
+main.c(625): Note! I2004: target conversion type is 'unsigned int'
+main.c(744): Warning! W131: No prototype found for function 'init8259APIC'
+main.c(747): Warning! W131: No prototype found for function 'floppy_install'
+main.c(812): Warning! W303: Parameter 'a_r' has been defined, but not referenced
+main.c(817): Warning! W131: No prototype found for function 'floppy_calibrate'
+main.c(815): Warning! W303: Parameter 'devno' has been defined, but not referenced
+main.c(822): Warning! W202: Symbol 'd' has been defined, but not referenced
+main.c(844): Warning! W131: No prototype found for function 'floppy_motor'
+main.c(851): Warning! W131: No prototype found for function 'floppy_check_irq'
+main.c(897): Warning! E1181: Parameter 2, sign specifier mismatch
+main.c(897): Note! I2003: source conversion type is 'unsigned int *'
+main.c(897): Note! I2004: target conversion type is 'int *'
+main.c(897): Warning! E1181: Parameter 3, sign specifier mismatch
+main.c(897): Note! I2003: source conversion type is 'unsigned int *'
+main.c(897): Note! I2004: target conversion type is 'int *'
+main.c(897): Note! I2002: 'floppy_check_irq' defined in: main.c(885)
+main.c(909): Warning! W107: Missing return value for function 'floppy_seek'
+main.c(931): Warning! W131: No prototype found for function 'play_sound'
+main.c(933): Warning! W131: No prototype found for function 'audiostop'
+main.c(994): Warning! W303: Parameter 'a_r' has been defined, but not referenced
+main.c(997): Warning! W303: Parameter 'a_r' has been defined, but not referenced
+main.c(1016): Warning! W304: Return type 'int' assumed for function 'WriteTOCMOS'
+main.c(1039): Warning! W107: Missing return value for function 'WriteTOCMOS'
+main.c(1135): Warning! W304: Return type 'int' assumed for function 'ReadFromCMOS'
+main.c(1136): Warning! W200: 'tvalue' has been referenced but never assigned a value
+main.c(1160): Warning! W107: Missing return value for function 'ReadFromCMOS'
+main.c(1191): Warning! W138: No newline at end of file
+main.c(697): Warning! W308: The function 'irq_install' without prototyped parameters called
+main.c(697): Note! I2002: 'irq_install' defined in: system.h(24)
+main.c(816): Warning! W308: The function 'irq_install' without prototyped parameters called
+main.c(816): Note! I2002: 'irq_install' defined in: system.h(24)
+main.c(1001): Warning! W308: The function 'irq_install' without prototyped parameters called
+main.c(1001): Note! I2002: 'irq_install' defined in: system.h(24)
+main.c(1013): Warning! W308: The function 'irq_install' without prototyped parameters called
+main.c(1013): Note! I2002: 'irq_install' defined in: system.h(24)
+main.c(122): Warning! W202: Symbol 'fb' has been defined, but not referenced
+main.c(797): Warning! W202: Symbol 'drive_types' has been defined, but not referenced
