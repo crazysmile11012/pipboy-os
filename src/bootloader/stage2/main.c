@@ -160,9 +160,9 @@ void _armour_()
 {
 	_clear_(); //calls clear screen code
 	puts("os distro: natewebos -> pipboyos\r\n");
-	puts("====================########==========================================\r\n");
+	puts("====================########===========================================\r\n");
 	puts("I STATUS I WEAPONS I#ARMOUR#I CLOTHES I MISC I DATA I MAP I           \r\n");
-	puts("====================########==========================================\r\n");
+	puts("====================########===========================================\r\n");
 	for (iu = 0; iu < 20; ++iu){
 		puts(fbdyn[iu]);
 		puts("\r\n");

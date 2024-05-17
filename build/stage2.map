@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Dec 25 2023 01:49:39 (64-bit)
 Copyright (c) 2002-2023 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       24/05/16 22:00:56
+Created on:       24/05/16 23:33:04
 Executable Image: /mnt/d/repos/pipboy-os/build/stage2.bin
 creating a RAW Binary Image executable
 
@@ -26,7 +26,7 @@ Segment                Class          Group          Address         Size
 
 _ENTRY                 CODE           AUTO           00000000        000001b4
 _TEXT                  CODE           AUTO           000001b4        00001e65
-CONST                  DATA           DGROUP         0000201a        0000070b
+CONST                  DATA           DGROUP         0000201a        0000070c
 CONST2                 DATA           DGROUP         00002726        00000011
 _DATA                  DATA           DGROUP         00002738        00000b46
 _BSS                   BSS            DGROUP         0000327e        00000818
@@ -248,7 +248,7 @@ x86.asm         _TEXT                 CODE           000001b4         0000005c
                 _DATA                 DATA           00002758         00000040
 /mnt/d/repos/pipboy-os/src/bootloader/stage2/main.c
                 _TEXT                 CODE           00000422         00001665
-                CONST                 DATA           00002172         000005b3
+                CONST                 DATA           00002172         000005b4
                 CONST2                DATA           00002726         00000000
                 _DATA                 DATA           00002798         00000ae6
                 _BSS                  BSS            00003a82         00000014
@@ -267,4 +267,4 @@ Warning! W1014: stack segment not found
 Stack size:  0200 (512.)
 Memory size:  3a96 (14998.)
 Entry point address: 00000000
-Link time: 00:00.95
+Link time: 00:00.53
