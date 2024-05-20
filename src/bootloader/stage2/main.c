@@ -28,6 +28,15 @@ volatile uint32_t CountDown;
 #define MIC_ADDR 0x0
 #define GPS_X_ADDR 0x0
 #define GPS_Y_ADDR 0x0
+//more crap
+int century_register = 0x00;                                // Set by ACPI table parsing code if possible
+
+unsigned char second;
+unsigned char minute;
+unsigned char hour;
+unsigned char day;
+unsigned char month;
+unsigned int year;
 //fat 12 vars
 volatile bool ReceivedIRQ = false;
 
@@ -493,6 +502,7 @@ void keyboard_scan_code_to_ascii(char scan_code)
 			_clear_();
 			puts("fat 12 driver is a wip");
 			shortbeep();
+			panic("test stopcode");
 			lastpage = 9;
 			
 		}
@@ -733,11 +743,13 @@ void outputb (unsigned short _port, unsigned char _data){
 */
 void driverloader(){
 	//put your driver function calls here
-	//usbtest();
-	init8259APIC();
+	//usbtest();//test usb driver, to be depricated if i can't get it working right and accepting .bin programs as files
+	init8259APIC();//re-init the programable irq controler in case the bios is lazy or my bootloaders irq enabler breaks
 	//mouse driver disabled for the time being
 	//mouse_install();//install mouse driver @ irq 12
 	floppy_install(0);//install floppy(0) driver @ irq 6
+	timer_pic_install();//install pic timer driver @ irq 0
+	cmos_timer_install();//install cmos rtc driver @irq 8
 };
 void usbtest(){
 	unsigned short inputport = 0x0001;
@@ -812,7 +824,7 @@ unsigned char floppy_read_data(int base) {
             return inb(base+DATA_FIFO);
         }
     }
-    panic(); // im being lazy again and insted of a propper kernel panic it just halts the cpu :3
+    panic("floppy drive read failure");
     return 0; // not reached
 }
 int floppy_calibrate(int base){
@@ -959,19 +971,29 @@ static void play_sound(int nFrequence) {
  TIME AND CLOCK FUNCTION DRIVER
  
  */
- int century_register = 0x00;                                // Set by ACPI table parsing code if possible
 
- unsigned char second;
-unsigned char minute;
-unsigned char hour;
-unsigned char day;
-unsigned char month;
-unsigned int year;
-void pic_timer_handler(struct regs *a_r){
+void sleep(int sec){
+	int sec2;
+	read_rtc();
+	sec2 = second;
+	puts("\r\n");
+	printf('%e',sec2);
+	puts("\r\n");
+	printf('%u',minute);
+	puts("\r\n");
+	printf(hour);
+	puts("\r\n");
+	printf(day);
+	puts("\r\n");
 	
+}
+void pic_timer_handler(struct regs *a_r){
+	puts("tick");
  }
 void cmos_timer_handler(struct regs *a_r){
-	
+	puts("tick");
+	// not much to be handled because it is on demand component, however a sleep and wait menu will be implemented later 
+	//for that you kinda need to get each passing hour and call shortbeep(); multiple times to wake you up
 }
 void timer_pic_install(){
 	irq_install(0,pic_timer_handler);
@@ -982,6 +1004,7 @@ void timer_pic_install(){
 	for(i =0; i > waits; i++){
 		//do nothing just pause the cpu 
 		__asm("	nop \r\n");
+		
 	 }
  }
  void cmos_timer_install(){
@@ -999,9 +1022,8 @@ void timer_pic_install(){
          cli             /* Clear interrupts*/
          mov al,index    /* move index address*/
          out 0x70,al     /* copy address to CMOS register*/
-         /* some kind of real delay here is probably best */
-         mov al,tvalue   /* move value to al*/
-         out 0x71,al     /* write 1 byte to CMOS*/
+         mov al,tvalue   /* move tvalue to al*/
+         out 0x71,al     /* write 1 byte to CMOS from al*/
          sti             /* Enable interrupts*/
       }
    }
@@ -1111,7 +1133,7 @@ ReadFromCMOS (unsigned char array [])
          cli             /* Disable interrupts*/
          mov al, index   /* Move index address*/
          /* since the 0x80 bit of al is not set, NMI is active */
-         out 0x70,al     /* Copy address to CMOS register*/
+         out 0x70,al     /* Copy address to CMOS register from al*/
          /* some kind of real delay here is probably best */
          in al,0x71      /* Fetch 1 byte to al*/
          sti             /* Enable interrupts*/
@@ -1121,7 +1143,64 @@ ReadFromCMOS (unsigned char array [])
        array[index] = tvalue;
    }
 }
+ /*
+ more random crap 
  
+ 
+ 
+ */
+ void panic(char errorcode[20]){
+	 /*
+	          _
+             | |
+             | |===( )   //////
+             |_|   |||  | o o|  how to hard reset your robco terminal
+                    ||| ( c  )                  ____
+                     ||| \= /                  ||   \_
+                      ||||||                   ||     |
+                      ||||||                ...||__/|-"
+                      ||||||             __|________|__
+                        |||             |______________|
+                        |||             || ||      || ||
+                        |||             || ||      || ||
+------------------------|||-------------||-||------||-||-------
+                        |__>            || ||      || ||
+	 
+	 */
+	
+	 
+	 _clear_();
+	 //setting background to blue
+	 __asm("MOV AH,0x00 \n");
+	 __asm("MOV AL,0x02 \n");
+	 __asm("INT 10h \n");
+	 __asm("MOV AH, 0x06        \n");
+	 __asm("MOV AL, 0x00   \n");
+	 __asm("MOV BH, 0x1f         \n");
+	 __asm("MOV CH, 0x00        \n");
+	 __asm("MOV CL, 0x00        \n");
+	 __asm("MOV DH, 0xFF         \n");
+	 __asm("MOV DL, 0x80         \n");
+	 __asm("INT 10h \n");
+	 // bsod 
+	 puts("your pipboy has encountered a fatal error and must stop \r\n");
+	 puts(" ######### \r\n");
+	 puts("#  *. .*  #     CALL: 1-800-ROBCO for support\r\n");
+	 puts("#         #     OR reserve a spot in line at one of our\r\n");
+	 puts("#  |```|  #     world class repair shops\r\n");
+	 puts("#         #\r\n");
+	 puts(" ######### \r\n");
+	 puts("stopcode:  \r\n");
+	 puts(errorcode);
+	 puts("\r\n");
+	 puts("shuting down driver service\r\n");
+	 
+	 //put some code here to kill irqs so inturupts don't trigger code and restart the os
+	 //sleep(1000);
+	 puts("halting machine\r\n");
+	 __asm("hlt \n");
+	 puts("If you are seeing this a bit was most likely flipped, This is very rare!");//should never reach this
+ }
  
  
  
