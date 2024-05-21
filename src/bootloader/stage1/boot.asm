@@ -3,7 +3,6 @@ bits 16
 
 %define ENDL 0x0D, 0x0A
 
-
 ;
 ; FAT12 header
 ; 

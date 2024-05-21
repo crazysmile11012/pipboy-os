@@ -20,9 +20,9 @@ entry:
 
     cli
     hlt
-global _idt_load
+global idt_load_
 extern _idtp
-_idt_load:
+idt_load_:
  lidt [_idtp]
  ret
 ; The interrupt service routines definitions

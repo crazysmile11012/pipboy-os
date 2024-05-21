@@ -130,13 +130,15 @@ int input;
 char msg[] = "handshake\n";
 static char *fb = (char *)FB_BASE_ADDRESS;
 void _cdecl cstart_(uint16_t bootDrive){
+	
+	irq_install();
 	driverloader();
-	_status_();
+	loop();
+	//_status_();
 	scancode = read_scan_code();
 	keyboard_scan_code_to_ascii(scancode);
-	loop();
 	//irq_install();
-	_asm("sti \r\n");
+	
 	
 	for(;;);
 	
@@ -390,32 +392,35 @@ void segments_load_gdt(){
 }
 void segments_load_registers()
 {
-	/*
+	
 	_asm("mov ax, 0x10 \r\n");
 	_asm("mov ds, ax \r\n");
 	_asm("mov ss, ax \r\n");
 	_asm("mov es, ax \r\n");
 	_asm("mov fs, ax \r\n");
 	_asm("mov gs, ax \r\n");
-	*/
+	
 }
 int read_scan_code(void)
     {
-        return inb(KBD_DATA_PORT);
+		return inb(KBD_DATA_PORT);
     }
 
 void loop(){
-	char scancode;//declare vars out of loop so it does not flood the ram
+	//char scancode;//declare vars out of loop so it does not flood the ram
 	while(true){
 		
 		//watch out for memory leaks here :)
-		scancode = read_scan_code();
+		
 		//puts(scancode);
 		
-		//printf(mouse_x);
+		//printf('u',mouse_x);
+		//puts("mouse x\r\n");
 		//puts("\r\n");
-		//printf(mouse_y);
+		//printf('u',mouse_y);
+		//puts("mouse y\r\n");
 		//puts("\r\n");
+		scancode = read_scan_code();
 		keyboard_scan_code_to_ascii(scancode);
 	}
 	
@@ -493,6 +498,9 @@ void keyboard_scan_code_to_ascii(char scan_code)
 		if(lastpage != 8){
 			//serial_write(0x3f8,msg,4); // serialtest
 			//outb(0x2F8,"D#L");
+			change_background(0x32);
+			countmemory();
+			
 			lastpage = 8;
 		}
 	
@@ -502,7 +510,7 @@ void keyboard_scan_code_to_ascii(char scan_code)
 			_clear_();
 			puts("fat 12 driver is a wip");
 			shortbeep();
-			panic("test stopcode");
+			debugcrash();
 			lastpage = 9;
 			
 		}
@@ -604,6 +612,7 @@ void keyboard_scan_code_to_ascii(char scan_code)
 //Mouse functions
 void mouse_handler(struct regs *a_r) //struct regs *a_r (not used but just there)
 {
+	puts("mouse");
   switch(mouse_cycle)
   {
     case 0:
@@ -659,14 +668,14 @@ inline void mouse_write(unsigned char a_write) //unsigned char
   //Wait for the final part
   mouse_wait(1);
   //Finally write
-  outb(0x60, a_write);
+  outb(0x60, a_write);//0x60 //0x64
 }
 
 unsigned char mouse_read()
 {
   //Get's response from mouse
   mouse_wait(0);
-  return inb(0x60);
+  return inb(0x60);//0x60
 }
 
 void mouse_install()
@@ -682,6 +691,7 @@ void mouse_install()
   outb(0x64, 0x20);
   mouse_wait(0);
   _status=(inb(0x60) | 2);
+  
   mouse_wait(1);
   outb(0x64, 0x60);
   mouse_wait(1);
@@ -697,7 +707,8 @@ void mouse_install()
 
   //Setup the mouse handler
   //irq_install_handler(12, mouse_handler);
-  irq_install(12,mouse_handler);
+  irq_install_handler(12,mouse_handler);
+  printf("mouse driver installed \r\n");
   //init8259APIC();
 }
 void *memcpy(void *dest, const void *src, size_t count)
@@ -727,29 +738,23 @@ size_t strlen(const char *str){
  for(retval = 0; *str != '\0'; str++) retval++;
  return retval;
 };
-// Reading from IO ports
-
-/*
-unsigned char inportb (unsigned short _port)
-{
- unsigned char rv;
- _asm("inb %1, %0" : "=a" (rv) : "dN" (_port));
- return rv;
-};
-// Writing to IO ports
-void outputb (unsigned short _port, unsigned char _data){
- _asm("outb %1, %0" : : "dN" (_port), "a" (_data));
-};
-*/
 void driverloader(){
 	//put your driver function calls here
 	//usbtest();//test usb driver, to be depricated if i can't get it working right and accepting .bin programs as files
-	init8259APIC();//re-init the programable irq controler in case the bios is lazy or my bootloaders irq enabler breaks
-	//mouse driver disabled for the time being
-	//mouse_install();//install mouse driver @ irq 12
+
+	//init8259APIC();//re-init the programable irq controler in case the bios is lazy or my bootloaders irq enabler breaks
+    //outb(0x21,0xfd);
+	outb(0xa1,0xff);
+	
 	floppy_install(0);//install floppy(0) driver @ irq 6
 	timer_pic_install();//install pic timer driver @ irq 0
 	cmos_timer_install();//install cmos rtc driver @irq 8
+	keyboard_install(); //install new keyboard driver @irq1
+	//mouse driver disabled for the time being
+	mouse_install();//install mouse driver @ irq 12
+	__asm("sti \r\n");
+	//__asm("int 0x8 \r\n");
+	puts("drivers loaded\r\n");
 };
 void usbtest(){
 	unsigned short inputport = 0x0001;
@@ -799,11 +804,12 @@ static volatile int floppy_motor_state = 0;
 int base = 0x03f0;
 void floppy_handler(struct regs *a_r){
 	ReceivedIRQ = true;
+	puts("floppy irq\r\n");
 }
 void floppy_install(int devno){
-	irq_install(6,floppy_handler);
-	floppy_calibrate(0x03f0);
-	
+	irq_install_handler(6,floppy_handler);
+	puts("floppy driver installed \r\n");
+	//floppy_calibrate(base);
 }
 void floppy_write_cmd(int base, char cmd) {
     int i; // do timeout, 60 seconds
@@ -824,7 +830,7 @@ unsigned char floppy_read_data(int base) {
             return inb(base+DATA_FIFO);
         }
     }
-    panic("floppy drive read failure");
+    panic("0x01 FLOPPY_READ_FAIL");
     return 0; // not reached
 }
 int floppy_calibrate(int base){
@@ -834,7 +840,7 @@ int floppy_calibrate(int base){
 		floppy_write_cmd(base, RECALIBRATE);
 		floppy_write_cmd(base, 0);
 		if(ReceivedIRQ == false){
-			printf("floppy error irq");
+			printf("floppy error irq \r\n");
 		}
 		floppy_check_irq(base,&st0,&cyl);
 		if(st0 & 0xc0){
@@ -996,19 +1002,27 @@ void cmos_timer_handler(struct regs *a_r){
 	//for that you kinda need to get each passing hour and call shortbeep(); multiple times to wake you up
 }
 void timer_pic_install(){
-	irq_install(0,pic_timer_handler);
+	irq_install_handler(0,pic_timer_handler);
+	puts("pic timer driver installed \r\n");
  }
  
  void timer_sleep_cycles(int waits){
 	//waits == number of clock cycles to sleeps
 	for(i =0; i > waits; i++){
-		//do nothing just pause the cpu 
-		__asm("	nop \r\n");
 		
+		_asm{
+		cli
+		MOV     CX, 0x0F 
+        MOV     DX, 0x4240 
+		MOV     AH, 0x86
+		sti 
+		INT     0x15
+		}
 	 }
  }
  void cmos_timer_install(){
-	 irq_install(8,cmos_timer_handler);
+	 irq_install_handler(8,cmos_timer_handler);
+	 puts("cmos timer driver installed \r\n");
  }
  WriteTOCMOS(unsigned char array[])
 {
@@ -1144,7 +1158,7 @@ ReadFromCMOS (unsigned char array [])
    }
 }
  /*
- more random crap 
+HELPER FUNCTIONS GO HERE
  
  
  
@@ -1170,18 +1184,23 @@ ReadFromCMOS (unsigned char array [])
 	
 	 
 	 _clear_();
-	 //setting background to blue
-	 __asm("MOV AH,0x00 \n");
-	 __asm("MOV AL,0x02 \n");
-	 __asm("INT 10h \n");
-	 __asm("MOV AH, 0x06        \n");
-	 __asm("MOV AL, 0x00   \n");
-	 __asm("MOV BH, 0x1f         \n");
-	 __asm("MOV CH, 0x00        \n");
-	 __asm("MOV CL, 0x00        \n");
-	 __asm("MOV DH, 0xFF         \n");
-	 __asm("MOV DL, 0x80         \n");
-	 __asm("INT 10h \n");
+	 //setting background to blue ###made a function for color, leaveing for referance###
+	 /*
+	 _asm{
+	MOV AH,0x00
+	MOV AL,0x02
+	INT 10h
+	MOV AH, 0x06     
+	MOV AL, 0x00   
+	MOV BH, 0x1f        
+	MOV CH, 0x00      
+	MOV CL, 0x00       
+	MOV DH, 0xFF       
+	MOV DL, 0x80       
+	INT 10h
+	 }
+	 */
+	 change_background(0x1f);//text white background blue
 	 // bsod 
 	 puts("your pipboy has encountered a fatal error and must stop \r\n");
 	 puts(" ######### \r\n");
@@ -1194,17 +1213,92 @@ ReadFromCMOS (unsigned char array [])
 	 puts(errorcode);
 	 puts("\r\n");
 	 puts("shuting down driver service\r\n");
+	 __asm("CLI \n");//clears irq's so they won't call any functions and cause runaway code
 	 
-	 //put some code here to kill irqs so inturupts don't trigger code and restart the os
-	 //sleep(1000);
+	 timer_sleep_cycles(1000);
 	 puts("halting machine\r\n");
 	 __asm("hlt \n");
 	 puts("If you are seeing this a bit was most likely flipped, This is very rare!");//should never reach this
  }
- 
- 
- 
- 
+void memtest(int addr, int corval){
+	/*
+	tests a byte in io map
+	takes 2 args:
+	- address of io map to test
+	- correct value to compare to
+	*/
+	printf("Testing memory");
+	if(inb(addr)==corval){
+		printf(addr+" passed");
+	}else{
+		printf(addr+" failed");
+	}
+}
+void outbrange(char data[], int start,int len){
+	for(i = 0;len >= i; i++){
+		outb(start+i,data[i]);
+	}
+}
+char inbrangechar(){
+	
+}
+int inbrangeint(){
+	
+}
+void change_background(char color){
+	
+	_asm{
+	MOV AH,0x00
+	MOV AL,0x02 
+	INT 10h 
+	MOV AH, 0x06
+	MOV AL, 0x00 
+	MOV BH, color
+	MOV CH, 0x00 
+	MOV CL, 0x00
+	MOV DH, 0xFF
+	MOV DL, 0x80
+	INT 10h
+	}
+}
+void tcpip(){
+	
+}
+void lan(){
+	
+	
+}
+void connectdns(){
+	
+}
+void stop_tcpip(){
+	
+}
+void start_modem(unsigned short com){
+	char cmd;
+	serial_configure_baud_rate(com,9600);
+	serial_configure_modem(com);
+	serial_write(com,cmd,8);
+}
+void debugcrash(){
+	panic("0x00 DEBUG CRASH");
+}
+void countmemory(){
+	
+}
+ char scancode;
+ void keyboard_handler(struct regs *a_r){
+	 //char scancode;
+	 scancode = read_scan_code();
+	 keyboard_scan_code_to_ascii(scancode);
+	 puts("kbd");
+
+ }
+ void keyboard_install(){
+	 irq_install_handler(1,keyboard_handler);
+	 printf("keyboard driver installed\r\n");
+ }
+
  
  
  

@@ -1,4 +1,5 @@
 #include "system.h"
+extern void idt_load();
 // An entry entry in the IDT table
 struct idt_entry{
  unsigned short base_lo;
@@ -6,7 +7,7 @@ struct idt_entry{
  unsigned char always0; // This value is always ... 0!
  unsigned char flags;
  unsigned short base_hi;
-}; /////////__attribute__((packed)); // We use the smalest alignment, meaning no zeros between
+};//__attribute__((packed)); // We use the smalest alignment, meaning no zeros between
 // our variables.
 struct idt_ptr{
  unsigned short limit;
@@ -38,8 +39,8 @@ void idt_install()
 // Sets the start address of the IDT
  idtp.base = &idt;
  // Set the entire IDT to zero
- //memset(&idt, 0, sizeof(struct idt_entry) * 256);
+ memset(&idt, 0, sizeof(struct idt_entry) * 256);
 // Here you can add new ISRs to the IDT via idt_set_gate
  // Tells the Processor where the new IDT can be found
- //idt_load();
+ idt_load();
 }

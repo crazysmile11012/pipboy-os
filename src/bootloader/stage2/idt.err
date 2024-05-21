@@ -1,4 +1,5 @@
-idt.c(39): Warning! W115: &array may not produce intended result
-idt.c(39): Warning! W102: Type mismatch (warning)
-idt.c(39): Note! I2003: source conversion type is 'struct idt_entry (*)[256]'
-idt.c(39): Note! I2004: target conversion type is 'unsigned int'
+idt.c(40): Warning! W115: &array may not produce intended result
+idt.c(40): Warning! W102: Type mismatch (warning)
+idt.c(40): Note! I2003: source conversion type is 'struct idt_entry (*)[256]'
+idt.c(40): Note! I2004: target conversion type is 'unsigned int'
+idt.c(42): Warning! W115: &array may not produce intended result

@@ -1,6 +1,6 @@
 #include "system.h"
 // The exception handlers in start.asm
-/*
+
 extern void isr0();
 extern void isr1();
 extern void isr2();
@@ -33,13 +33,13 @@ extern void isr28();
 extern void isr29();
 extern void isr30();
 extern void isr31();
-*/
+
 // Here we register the first 32 ISRs in our IDT. The access flag is
 // set to 0x8E which means the entry is present and running in ring 0 (kernel mode)
 // and has the lower bytes set to the required '14'.
 void isrs_install()
 {
-	/*
+	
  idt_set_gate(0, (unsigned)isr0, 0x08, 0x8E);
  idt_set_gate(1, (unsigned)isr1, 0x08, 0x8E);
  idt_set_gate(2, (unsigned)isr2, 0x08, 0x8E);
@@ -72,7 +72,7 @@ void isrs_install()
  idt_set_gate(29, (unsigned)isr29, 0x08, 0x8E);
  idt_set_gate(30, (unsigned)isr30, 0x08, 0x8E);
  idt_set_gate(31, (unsigned)isr31, 0x08, 0x8E);
- */
+ 
 };
 // This string array contains the message corresponding
 // to the exceptions.

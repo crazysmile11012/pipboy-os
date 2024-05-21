@@ -2,7 +2,7 @@
 // We define these Interrupt Service Requests on our own
 // to point to a special IRQ handler instead of the regular
 // fault_handler.
-/*
+
 extern void irq0();
 extern void irq1();
 extern void irq2();
@@ -19,7 +19,7 @@ extern void irq12();
 extern void irq13();
 extern void irq14();
 extern void irq15();
-*/
+
 // Pointer array to handle custom ORQ handlers of a special IRQ
 void *irq_routines[16] =
 {
@@ -59,7 +59,7 @@ void irq_remap(void)
 void irq_install()
 {
  irq_remap();
- /*
+ 
  idt_set_gate(32, (unsigned)irq0, 0x08, 0x8E);
  idt_set_gate(33, (unsigned)irq1, 0x08, 0x8E);
  idt_set_gate(34, (unsigned)irq2, 0x08, 0x8E);
@@ -76,7 +76,7 @@ void irq_install()
  idt_set_gate(45, (unsigned)irq13, 0x08, 0x8E);
  idt_set_gate(46, (unsigned)irq14, 0x08, 0x8E);
  idt_set_gate(47, (unsigned)irq15, 0x08, 0x8E);
- */
+ 
 }
 // Each service routine of an Interrupt Request points to this
 // function. After handling the ISR we need to tell the interrupt
