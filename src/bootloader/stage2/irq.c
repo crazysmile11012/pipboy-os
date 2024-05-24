@@ -83,7 +83,7 @@ void irq_install()
 // Each service routine of an Interrupt Request points to this
 // function. After handling the ISR we need to tell the interrupt
 // controllers that we are done handling the interrupt. As said
-// in the tutorial this happens by putting the hex value 0x20 to
+// this happens by putting the hex value 0x20 to
 // the adress 0x20 for the first controller and for the second
 // controller we write 0x20 to 0xA0.
 // If the second controller (IRQ from 8 to 15) receives and interrupt
@@ -99,7 +99,7 @@ void irq_handler(struct regs *r)
  if (handler)
  {
 	handler(r);
- 	//puts("irq handler \r\n");
+ 	puts("irq handler \r\n");
  }
 // Here we are already done with the handling of our interrupt!
 

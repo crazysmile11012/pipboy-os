@@ -279,18 +279,20 @@ isr_common_stub:
 
 ; 32: IRQ0
 irq0_:
- 
+ sti
  push byte 0
  push byte 32
  jmp irq_common_stub
 ; 33: IRQ1
 irq1_:
- 
+ sti
  push byte 0
  push byte 33
  jmp irq_common_stub
+ ret
 ; 34: IRQ2
 irq2_:
+ sti
  ;;cli
  push byte 0
  push byte 34
@@ -386,13 +388,13 @@ irq_common_stub:
  mov fs, ax
  mov gs, ax
  mov eax, esp
- push eax
+ ;push eax
  ;mov eax, irq_handler_
  ;call eax
  call irq_handler_
- mov si, debug
+ ;mov si, debug
  ;call puts_
- pop eax
+ ;pop eax
  pop gs
  pop fs
  pop es

@@ -1,7 +1,7 @@
 #include "system.h"
 extern void idt_load();
 // An entry entry in the IDT table
-struct idt_entry{
+struct  idt_entry{
  unsigned short base_lo;
  unsigned short sel; // The kernel segment
  unsigned char always0; // This value is always ... 0!
@@ -42,5 +42,6 @@ void idt_install()
  memset(&idt, 0, sizeof(struct idt_entry) * 256);
 // Here you can add new ISRs to the IDT via idt_set_gate
  // Tells the Processor where the new IDT can be found
+ puts("idt\r\n");
  idt_load();
 }

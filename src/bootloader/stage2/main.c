@@ -130,15 +130,15 @@ int input;
 char msg[] = "handshake\n";
 static char *fb = (char *)FB_BASE_ADDRESS;
 void _cdecl cstart_(uint16_t bootDrive){
-	
-	
+	//idt_install();
+	//puts("idt installed\r\n");
 	driverloader();
+	
 	loop();
 	//_status_();
-	scancode = read_scan_code();
-	keyboard_scan_code_to_ascii(scancode);
+	//scancode = read_scan_code();
+	//keyboard_scan_code_to_ascii(scancode);
 	//irq_install();
-	
 	
 	for(;;);
 	
@@ -422,6 +422,7 @@ void loop(){
 		//puts("\r\n");
 		scancode = read_scan_code();
 		keyboard_scan_code_to_ascii(scancode);
+		//irq_handler(1);
 	}
 	
 }
@@ -499,17 +500,18 @@ void keyboard_scan_code_to_ascii(char scan_code)
 			//serial_write(0x3f8,msg,4); // serialtest
 			//outb(0x2F8,"D#L");
 			//change_background(0x32);
-			_clear_();
+			//_clear_();
 			//puts("countram \r\n");
 			//countmemory();
-			//_asm("sti \r\n");
+			_asm("sti \r\n");
+			//idt_install();
 			//_asm("INT 0h \r\n");
 			//_asm("INT 1h \r\n");
 			//_asm("INT 2h \r\n");
 			//_asm("INT 3h \r\n");
 			//_asm("INT 4h \r\n");
 			//_asm("INT 5h \r\n");
-			//_asm("INT 6h \r\n");
+			//_asm("INT 2h \r\n");
 			//_asm("INT 7h \r\n");
 			//_asm("INT 8h \r\n");
 			//_asm("INT 9h \r\n");
@@ -520,8 +522,10 @@ void keyboard_scan_code_to_ascii(char scan_code)
 			//_asm("INT 14h \r\n");
 			//_asm("INT 15h \r\n");
 			//irqtest();
-			//irq1();
-			//_irq_routines(1);
+			irq1();
+			//keyboard_install();
+			
+			//irq_routines(1);
 			//lastpage = 8;
 		}
 	
@@ -772,6 +776,7 @@ void driverloader(){
 	keyboard_install(); //install new keyboard driver @irq1
 	//mouse driver disabled for the time being
 	//mouse_install();//install mouse driver @ irq 12
+	isrs_install();
 	irq_install();
 	__asm("sti \r\n");
 	//__asm("int 0x8 \r\n");
