@@ -1,5 +1,0 @@
-isrs.c(122): Warning! W131: No prototype found for function 'puts'
-isrs.c(122): Warning! W308: The function 'puts' without prototyped parameters called
-isrs.c(122): Note! I2002: 'puts' defined in: isrs.c(122)
-isrs.c(123): Warning! W308: The function 'puts' without prototyped parameters called
-isrs.c(123): Note! I2002: 'puts' defined in: isrs.c(122)

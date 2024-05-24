@@ -1,6 +1,9 @@
+#pragma once
 #ifndef __SYSTEM_H
 #define __SYSTEM_H 
 #include "stdint.h"
+#include "stdio.h"
+#include "x86.h"
 extern void *memcpy(void *dest, const void *src, size_t count);
 extern void *memset(void *dest, char val, size_t count);
 extern unsigned short *memsetw(unsigned short *dest, unsigned short val,size_t count);
@@ -9,6 +12,7 @@ extern unsigned char inb (unsigned short _port);
 extern void outb (unsigned short _port, unsigned char _data);
 extern void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags);
 extern void idt_install();
+//extern void puts();
 struct regs
 {
  unsigned int gs, fs, es, ds;
@@ -24,4 +28,5 @@ extern void irq_uninstall_handler(int irq);
 extern void irq_install();
 extern void irq_handler(struct regs *r);
 extern void idt_load();				
+extern void fault_handler();
 #endif

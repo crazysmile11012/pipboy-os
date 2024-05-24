@@ -131,7 +131,7 @@ char msg[] = "handshake\n";
 static char *fb = (char *)FB_BASE_ADDRESS;
 void _cdecl cstart_(uint16_t bootDrive){
 	
-	irq_install();
+	
 	driverloader();
 	loop();
 	//_status_();
@@ -498,10 +498,31 @@ void keyboard_scan_code_to_ascii(char scan_code)
 		if(lastpage != 8){
 			//serial_write(0x3f8,msg,4); // serialtest
 			//outb(0x2F8,"D#L");
-			change_background(0x32);
-			countmemory();
-			
-			lastpage = 8;
+			//change_background(0x32);
+			_clear_();
+			//puts("countram \r\n");
+			//countmemory();
+			//_asm("sti \r\n");
+			//_asm("INT 0h \r\n");
+			//_asm("INT 1h \r\n");
+			//_asm("INT 2h \r\n");
+			//_asm("INT 3h \r\n");
+			//_asm("INT 4h \r\n");
+			//_asm("INT 5h \r\n");
+			//_asm("INT 6h \r\n");
+			//_asm("INT 7h \r\n");
+			//_asm("INT 8h \r\n");
+			//_asm("INT 9h \r\n");
+			//_asm("INT 10h \r\n");
+			//_asm("INT 11h \r\n");
+			//_asm("INT 12h \r\n");
+			//_asm("INT 13h \r\n");
+			//_asm("INT 14h \r\n");
+			//_asm("INT 15h \r\n");
+			//irqtest();
+			//irq1();
+			//_irq_routines(1);
+			//lastpage = 8;
 		}
 	
 	}else if (ascii[scan_code-1] == '9'){//page9
@@ -511,7 +532,7 @@ void keyboard_scan_code_to_ascii(char scan_code)
 			puts("fat 12 driver is a wip");
 			shortbeep();
 			debugcrash();
-			lastpage = 9;
+			//lastpage = 9;
 			
 		}
 	
@@ -706,7 +727,6 @@ void mouse_install()
   mouse_read();  //Acknowledge
 
   //Setup the mouse handler
-  //irq_install_handler(12, mouse_handler);
   irq_install_handler(12,mouse_handler);
   printf("mouse driver installed \r\n");
   //init8259APIC();
@@ -744,14 +764,15 @@ void driverloader(){
 
 	//init8259APIC();//re-init the programable irq controler in case the bios is lazy or my bootloaders irq enabler breaks
     //outb(0x21,0xfd);
-	outb(0xa1,0xff);
+	//outb(0xa1,0xff);
 	
 	floppy_install(0);//install floppy(0) driver @ irq 6
 	timer_pic_install();//install pic timer driver @ irq 0
 	cmos_timer_install();//install cmos rtc driver @irq 8
 	keyboard_install(); //install new keyboard driver @irq1
 	//mouse driver disabled for the time being
-	mouse_install();//install mouse driver @ irq 12
+	//mouse_install();//install mouse driver @ irq 12
+	irq_install();
 	__asm("sti \r\n");
 	//__asm("int 0x8 \r\n");
 	puts("drivers loaded\r\n");

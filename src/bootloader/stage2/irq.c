@@ -19,7 +19,6 @@ extern void irq12();
 extern void irq13();
 extern void irq14();
 extern void irq15();
-
 // Pointer array to handle custom ORQ handlers of a special IRQ
 void *irq_routines[16] =
 {
@@ -32,12 +31,14 @@ void *irq_routines[16] =
 void irq_install_handler(int irq, void (*handler)(struct regs *r))
 {
  irq_routines[irq] = handler;
+ puts("irq install handler\r\n");
 }
 // By setting the pointer of an interrupt routine to 0
 // we will unload the handler.
 void irq_uninstall_handler(int irq)
 {
  irq_routines[irq] = 0;
+ puts("irq uninstall \r\n");
 };
 // Here we remap our IRQs (0-15 to 32-47)
 void irq_remap(void)
@@ -52,6 +53,7 @@ void irq_remap(void)
  outb(0xA1, 0x01);
  outb(0x21, 0x0);
  outb(0xA1, 0x0);
+ puts("irq remap \r\n");
 }
 // Identical to defining the exception handlers we will
 // install the appropriate Interrupt Service Routines to the
@@ -76,7 +78,7 @@ void irq_install()
  idt_set_gate(45, (unsigned)irq13, 0x08, 0x8E);
  idt_set_gate(46, (unsigned)irq14, 0x08, 0x8E);
  idt_set_gate(47, (unsigned)irq15, 0x08, 0x8E);
- 
+ puts("irq install \r\n");
 }
 // Each service routine of an Interrupt Request points to this
 // function. After handling the ISR we need to tell the interrupt
@@ -91,17 +93,20 @@ void irq_handler(struct regs *r)
 {
 // Blank function pointer
  void (*handler)(struct regs *r);
+ //puts("irq handler\r\n");
  // If we have a routine defined for this interrupt call it!
  handler = irq_routines[r->int_no - 32];
  if (handler)
  {
- handler(r);
+	handler(r);
+ 	//puts("irq handler \r\n");
  }
 // Here we are already done with the handling of our interrupt!
 
 // If the entry in the IDT that we called had an index >= 40
 // we will have to send an "End of Interrupt" (0x20) to the
 // second controller.
+//puts("int end \r\n");
  if (r->int_no >= 40)
  {
  outb(0xA0, 0x20);
