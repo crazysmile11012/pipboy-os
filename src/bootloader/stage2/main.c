@@ -3,7 +3,7 @@
 #include "system.h"
 #include "x86.h"
 volatile uint32_t CountDown;
-#define CURRENT_YEAR        2024                            // Change this each year its jank but hey!
+#define CURRENT_YEAR        2024                            // Change this each year, will make this a file when fat is fully implemented
 #define FB_COMMAND_PORT         0x3D4
 #define FB_DATA_PORT            0x3D5
 #define COUNTDOWN_DONE_MSG 1
@@ -822,6 +822,31 @@ void init8259APIC(){
 	__asm("	out 0x21, al \r\n");
 	__asm("	out 0xA1, al \r\n");
 };
+/*
+
+
+ _________
+|^|     | |
+| |_____| |
+|  _____  |
+| |     | |
+| |_____| |
+|_|_____|_|
+
+FLOPPY DISK DRIVER 
+
+DON"T TOUCH THE MAGNETIC DISK INSIDE OR THE HEAD!!!!!!
+
+
+
+
+
+
+
+
+
+
+*/
 int st0;
 int cyl;
 static const char * drive_types[8] = {
@@ -1013,6 +1038,18 @@ static void play_sound(int nFrequence) {
  
  TIME AND CLOCK FUNCTION DRIVER
  
+ 
+ 
+ only a matter of time before it kernel panics
+ times a ticking
+ #################
+ #       #        #
+ #       #        #
+ #       #        #
+ #       ()#      #
+ #          #     #
+ #            #   #
+ ##################
  */
 
 void sleep(int sec){
@@ -1336,6 +1373,22 @@ void countmemory(){
 	 printf("keyboard driver installed\r\n");
  }
  // fat 12 wip driver :)
+ 
+ /*
+  _________
+|^|     | |
+| |_____| |
+|  _____  |
+| |FAT12| |
+| |_____| |
+|_|_____|_|
+ 
+ CRAPPY FAT 12 IMPLEMENTATION HERE :)
+ 
+ NO RODMATRONIC!!! I WILL BE LAZY AND PUT IT IN ONE FILE!!!!
+ :3
+ 
+ */
 void fat12init(){
 	//checks if floppy driver is good
 	//tell floppy driver to calibrate head

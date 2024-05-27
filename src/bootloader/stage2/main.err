@@ -14,54 +14,54 @@ main.c(797): Warning! W131: No prototype found for function 'floppy_install'
 main.c(798): Warning! W131: No prototype found for function 'timer_pic_install'
 main.c(799): Warning! W131: No prototype found for function 'cmos_timer_install'
 main.c(800): Warning! W131: No prototype found for function 'keyboard_install'
-main.c(873): Warning! W303: Parameter 'a_r' has been defined, but not referenced
-main.c(877): Warning! W303: Parameter 'devno' has been defined, but not referenced
-main.c(884): Warning! W202: Symbol 'd' has been defined, but not referenced
-main.c(901): Warning! W131: No prototype found for function 'panic'
-main.c(906): Warning! W131: No prototype found for function 'floppy_motor'
-main.c(913): Warning! W131: No prototype found for function 'floppy_check_irq'
-main.c(959): Warning! E1181: Parameter 2, sign specifier mismatch
-main.c(959): Note! I2003: source conversion type is 'unsigned int *'
-main.c(959): Note! I2004: target conversion type is 'int *'
-main.c(959): Warning! E1181: Parameter 3, sign specifier mismatch
-main.c(959): Note! I2003: source conversion type is 'unsigned int *'
-main.c(959): Note! I2004: target conversion type is 'int *'
-main.c(959): Note! I2002: 'floppy_check_irq' defined in: main.c(947)
-main.c(971): Warning! W107: Missing return value for function 'floppy_seek'
-main.c(993): Warning! W131: No prototype found for function 'play_sound'
-main.c(995): Warning! W131: No prototype found for function 'audiostop'
-main.c(1051): Warning! W131: No prototype found for function 'read_rtc'
-main.c(1054): Warning! W101: Parameter 1: Non-portable pointer conversion
-main.c(1054): Note! I2003: source conversion type is 'int'
-main.c(1054): Note! I2004: target conversion type is 'char const *'
-main.c(1056): Warning! W101: Parameter 1: Non-portable pointer conversion
-main.c(1056): Note! I2003: source conversion type is 'int'
-main.c(1056): Note! I2004: target conversion type is 'char const *'
-main.c(1058): Warning! W102: Parameter 1: Type mismatch (warning)
-main.c(1058): Note! I2003: source conversion type is 'unsigned char'
-main.c(1058): Note! I2004: target conversion type is 'char const *'
-main.c(1058): Note! I2002: 'printf' defined in: stdio.h(7)
-main.c(1060): Warning! W102: Parameter 1: Type mismatch (warning)
-main.c(1060): Note! I2003: source conversion type is 'unsigned char'
-main.c(1060): Note! I2004: target conversion type is 'char const *'
-main.c(1060): Note! I2002: 'printf' defined in: stdio.h(7)
-main.c(1049): Warning! W303: Parameter 'sec' has been defined, but not referenced
-main.c(1064): Warning! W303: Parameter 'a_r' has been defined, but not referenced
-main.c(1067): Warning! W303: Parameter 'a_r' has been defined, but not referenced
-main.c(1102): Warning! W304: Return type 'int' assumed for function 'WriteTOCMOS'
-main.c(1124): Warning! W107: Missing return value for function 'WriteTOCMOS'
-main.c(1220): Warning! W304: Return type 'int' assumed for function 'ReadFromCMOS'
-main.c(1221): Warning! W200: 'tvalue' has been referenced but never assigned a value
-main.c(1245): Warning! W107: Missing return value for function 'ReadFromCMOS'
-main.c(1289): Warning! W131: No prototype found for function 'change_background'
-main.c(1332): Warning! W107: Missing return value for function 'inbrangechar'
-main.c(1335): Warning! W107: Missing return value for function 'inbrangeint'
-main.c(1380): Warning! W200: 'cmd' has been referenced but never assigned a value
-main.c(1380): Warning! W102: Parameter 2: Type mismatch (warning)
-main.c(1380): Note! I2003: source conversion type is 'char'
-main.c(1380): Note! I2004: target conversion type is 'char *'
-main.c(1389): Warning! W303: Parameter 'a_r' has been defined, but not referenced
-main.c(1418): Warning! W107: Missing return value for function 'diskreadbyte'
-main.c(1478): Warning! W138: No newline at end of file
+main.c(898): Warning! W303: Parameter 'a_r' has been defined, but not referenced
+main.c(902): Warning! W303: Parameter 'devno' has been defined, but not referenced
+main.c(909): Warning! W202: Symbol 'd' has been defined, but not referenced
+main.c(926): Warning! W131: No prototype found for function 'panic'
+main.c(931): Warning! W131: No prototype found for function 'floppy_motor'
+main.c(938): Warning! W131: No prototype found for function 'floppy_check_irq'
+main.c(984): Warning! E1181: Parameter 2, sign specifier mismatch
+main.c(984): Note! I2003: source conversion type is 'unsigned int *'
+main.c(984): Note! I2004: target conversion type is 'int *'
+main.c(984): Warning! E1181: Parameter 3, sign specifier mismatch
+main.c(984): Note! I2003: source conversion type is 'unsigned int *'
+main.c(984): Note! I2004: target conversion type is 'int *'
+main.c(984): Note! I2002: 'floppy_check_irq' defined in: main.c(972)
+main.c(996): Warning! W107: Missing return value for function 'floppy_seek'
+main.c(1018): Warning! W131: No prototype found for function 'play_sound'
+main.c(1020): Warning! W131: No prototype found for function 'audiostop'
+main.c(1088): Warning! W131: No prototype found for function 'read_rtc'
+main.c(1091): Warning! W101: Parameter 1: Non-portable pointer conversion
+main.c(1091): Note! I2003: source conversion type is 'int'
+main.c(1091): Note! I2004: target conversion type is 'char const *'
+main.c(1093): Warning! W101: Parameter 1: Non-portable pointer conversion
+main.c(1093): Note! I2003: source conversion type is 'int'
+main.c(1093): Note! I2004: target conversion type is 'char const *'
+main.c(1095): Warning! W102: Parameter 1: Type mismatch (warning)
+main.c(1095): Note! I2003: source conversion type is 'unsigned char'
+main.c(1095): Note! I2004: target conversion type is 'char const *'
+main.c(1095): Note! I2002: 'printf' defined in: stdio.h(7)
+main.c(1097): Warning! W102: Parameter 1: Type mismatch (warning)
+main.c(1097): Note! I2003: source conversion type is 'unsigned char'
+main.c(1097): Note! I2004: target conversion type is 'char const *'
+main.c(1097): Note! I2002: 'printf' defined in: stdio.h(7)
+main.c(1086): Warning! W303: Parameter 'sec' has been defined, but not referenced
+main.c(1101): Warning! W303: Parameter 'a_r' has been defined, but not referenced
+main.c(1104): Warning! W303: Parameter 'a_r' has been defined, but not referenced
+main.c(1139): Warning! W304: Return type 'int' assumed for function 'WriteTOCMOS'
+main.c(1161): Warning! W107: Missing return value for function 'WriteTOCMOS'
+main.c(1257): Warning! W304: Return type 'int' assumed for function 'ReadFromCMOS'
+main.c(1258): Warning! W200: 'tvalue' has been referenced but never assigned a value
+main.c(1282): Warning! W107: Missing return value for function 'ReadFromCMOS'
+main.c(1326): Warning! W131: No prototype found for function 'change_background'
+main.c(1369): Warning! W107: Missing return value for function 'inbrangechar'
+main.c(1372): Warning! W107: Missing return value for function 'inbrangeint'
+main.c(1417): Warning! W200: 'cmd' has been referenced but never assigned a value
+main.c(1417): Warning! W102: Parameter 2: Type mismatch (warning)
+main.c(1417): Note! I2003: source conversion type is 'char'
+main.c(1417): Note! I2004: target conversion type is 'char *'
+main.c(1426): Warning! W303: Parameter 'a_r' has been defined, but not referenced
+main.c(1471): Warning! W107: Missing return value for function 'diskreadbyte'
+main.c(1531): Warning! W138: No newline at end of file
 main.c(131): Warning! W202: Symbol 'fb' has been defined, but not referenced
-main.c(858): Warning! W202: Symbol 'drive_types' has been defined, but not referenced
+main.c(883): Warning! W202: Symbol 'drive_types' has been defined, but not referenced
