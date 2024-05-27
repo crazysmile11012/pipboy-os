@@ -5,7 +5,6 @@ main.c(148): Warning! W131: No prototype found for function '_clear_'
 main.c(320): Warning! W200: 'ret1' has been referenced but never assigned a value
 main.c(381): Warning! W131: No prototype found for function 'serial_write_byte'
 main.c(436): Warning! W131: No prototype found for function 'keyboard_scan_code_to_ascii'
-main.c(538): Warning! W131: No prototype found for function 'irq1'
 main.c(550): Warning! W131: No prototype found for function 'shortbeep'
 main.c(551): Warning! W131: No prototype found for function 'debugcrash'
 main.c(651): Warning! W303: Parameter 'a_r' has been defined, but not referenced

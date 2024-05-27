@@ -522,7 +522,7 @@ void keyboard_scan_code_to_ascii(char scan_code)
 			//_asm("INT 14h \r\n");
 			//_asm("INT 15h \r\n");
 			//irqtest();
-			irq1();
+			//irq1();
 			//keyboard_install();
 			
 			//irq_routines(1);
