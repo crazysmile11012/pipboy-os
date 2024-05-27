@@ -146,10 +146,10 @@ void _cdecl cstart_(uint16_t bootDrive){
 
 void _status_(){
 	_clear_(); //calls clear screen code
-	puts("os distro: natewebos -> pipboyos                                       \r\n");
-	puts("=########==============================================================\r\n");
-	puts("I#STATUS#I WEAPONS I ARMOUR I CLOTHES I MISC I DATA I MAP I            \r\n");
-	puts("=########==============================================================\r\n");
+	puts("os distro: natewebos -> pipboyos\r\n");
+	puts("########==============================================================\r\n");
+	puts("#STATUS#I WEAPONS I ARMOUR I CLOTHES I MISC I DATA I MAP I DBUG I FAT\r\n");
+	puts("########==============================================================\r\n");
 	
 	for (iu = 0; iu < 20; ++iu){
 		puts(statdyn[iu]);
@@ -159,10 +159,10 @@ void _status_(){
 void _weapons_()
 {
 	_clear_(); //calls clear screen code
-	puts("os distro: natewebos -> pipboyos                                       \r\n");
-	puts("==========#########====================================================\r\n");
-	puts("I STATUS I#WEAPONS#I ARMOUR I CLOTHES I MISC I DATA I MAP I            \r\n");
-	puts("==========#########====================================================\r\n");
+	puts("os distro: natewebos -> pipboyos\r\n");
+	puts("=========#########====================================================\r\n");
+	puts(" STATUS I#WEAPONS#I ARMOUR I CLOTHES I MISC I DATA I MAP I DBUG I FAT \r\n");
+	puts("=========#########====================================================\r\n");
 	for (iu = 0; iu < 20; ++iu){
 		puts(wepdyn[iu]);
 		puts("\r\n");
@@ -172,9 +172,9 @@ void _armour_()
 {
 	_clear_(); //calls clear screen code
 	puts("os distro: natewebos -> pipboyos\r\n");
-	puts("====================########===========================================\r\n");
-	puts("I STATUS I WEAPONS I#ARMOUR#I CLOTHES I MISC I DATA I MAP I           \r\n");
-	puts("====================########===========================================\r\n");
+	puts("===================########===========================================\r\n");
+	puts(" STATUS I WEAPONS I#ARMOUR#I CLOTHES I MISC I DATA I MAP I DBUG I FAT \r\n");
+	puts("===================########===========================================\r\n");
 	for (iu = 0; iu < 20; ++iu){
 		puts(fbdyn[iu]);
 		puts("\r\n");
@@ -184,9 +184,9 @@ void _clothes_()
 {
 	_clear_(); //calls clear screen code
 	puts("os distro: natewebos -> pipboyos\r\n");
-	puts("=============================#########=================================\r\n");
-	puts("I STATUS I WEAPONS I ARMOUR I#CLOTHES#I MISC I DATA I MAP I            \r\n");
-	puts("=============================#########=================================\r\n");
+	puts("============================#########=================================\r\n");
+	puts(" STATUS I WEAPONS I ARMOUR I#CLOTHES#I MISC I DATA I MAP I DBUG I FAT \r\n");
+	puts("============================#########=================================\r\n");
 	for (iu = 0; iu < 20; ++iu){
 		puts(fbdyn[iu]);
 		puts("\r\n");
@@ -196,9 +196,9 @@ void _misc_()
 {
 	_clear_(); //calls clear screen code
 	puts("os distro: natewebos -> pipboyos\r\n");
-	puts("=======================================######==========================\r\n");
-	puts("I STATUS I WEAPONS I ARMOUR I CLOTHES I#MISC#I DATA I MAP I            \r\n");
-	puts("=======================================######==========================\r\n");
+	puts("======================================######==========================\r\n");
+	puts(" STATUS I WEAPONS I ARMOUR I CLOTHES I#MISC#I DATA I MAP I DBUG I FAT \r\n");
+	puts("======================================######==========================\r\n");
 	for (iu = 0; iu < 20; ++iu){
 		puts(fbdyn[iu]);
 		puts("\r\n");
@@ -208,9 +208,9 @@ void _data_()
 {
 	_clear_(); //calls clear screen code
 	puts("os distro: natewebos -> pipboyos\r\n");
-	puts("==============================================######===================\r\n");
-	puts("I STATUS I=WEAPONS I ARMOUR I CLOTHES I MISC I#DATA#I MAP I            \r\n");
-	puts("==============================================######===================\r\n");
+	puts("=============================================######===================\r\n");
+	puts(" STATUS I WEAPONS I ARMOUR I CLOTHES I MISC I#DATA#I MAP I DBUG I FAT \r\n");
+	puts("=============================================######===================\r\n");
 	for (iu = 0; iu < 20; ++iu){
 		puts(fbdyn[iu]);
 		puts("\r\n");
@@ -220,9 +220,9 @@ void _map_()
 {
 	_clear_(); //calls clear screen code
 	puts("os distro: natewebos -> pipboyos\r\n");
-	puts("=====================================================#####=============\r\n");
-	puts("I STATUS I WEAPONS I ARMOUR I CLOTHES I MISC I DATA I#MAP#I            \r\n");
-	puts("=====================================================#####=============\r\n");
+	puts("====================================================#####=============\r\n");
+	puts(" STATUS I WEAPONS I ARMOUR I CLOTHES I MISC I DATA I#MAP#I DBUG I FAT \r\n");
+	puts("====================================================#####=============\r\n");
 	for (iu = 0; iu < 20; ++iu){
 		puts(fbdyn[iu]);
 		puts("\r\n");
@@ -497,6 +497,12 @@ void keyboard_scan_code_to_ascii(char scan_code)
 	
 	}else if (ascii[scan_code-1] == '8'){//serialcom
 		if(lastpage != 8){
+			_clear_();
+			puts("os distro: natewebos -> pipboyos\r\n");
+			puts("==========================================================######======\r\n");
+			puts(" STATUS I WEAPONS I ARMOUR I CLOTHES I MISC I DATA I MAP I#DBUG#I FAT \r\n");
+			puts("==========================================================######======\r\n");
+	
 			//serial_write(0x3f8,msg,4); // serialtest
 			//outb(0x2F8,"D#L");
 			//change_background(0x32);
@@ -526,17 +532,22 @@ void keyboard_scan_code_to_ascii(char scan_code)
 			//keyboard_install();
 			
 			//irq_routines(1);
-			//lastpage = 8;
+			lastpage = 8;
 		}
 	
 	}else if (ascii[scan_code-1] == '9'){//page9
 		if(lastpage != 9){
 			// run holotape program
 			_clear_();
+			puts("os distro: natewebos -> pipboyos\r\n");
+			puts("=================================================================#####\r\n");
+			puts(" STATUS I WEAPONS I ARMOUR I CLOTHES I MISC I DATA I MAP I DBUG I#FAT#\r\n");
+			puts("=================================================================#####\r\n");
+	
 			puts("fat 12 driver is a wip");
 			shortbeep();
-			debugcrash();
-			//lastpage = 9;
+			//debugcrash();
+			lastpage = 9;
 			
 		}
 	
@@ -1324,9 +1335,61 @@ void countmemory(){
 	 irq_install_handler(1,keyboard_handler);
 	 printf("keyboard driver installed\r\n");
  }
+ // fat 12 wip driver :)
+void fat12init(){
+	//checks if floppy driver is good
+	//tell floppy driver to calibrate head
+	//searches for a file alocation table, if not found creates one and continues otherwise it continues
+	//checks if the fat is valid 
+	//calibrates drive again
+	//reads and prints out disk information
+	//file structure dump
+	//adds a cli to cd(dirpath),del(file),edit(file),echo("what to write",file),run(types(b(bin),e(exe),rb(raw binary line by line staticly)),file,int var))
+	//key(esc) to exit otherwise loop
+	
+	
+}
+char diskreadbyte(){//returns data at paramater's location
+	
+	
+	return;
+}
+void diskwritebyte(){//writes byte specified at address specified
+	
+	
+	
+}
+void diskzerobyte(){//zeros out byte addr specified
+	
+	
+	
+}
+void diskcomparebyteaa(){//addr1,addr2
+	//compares contents
+	
+	
+	
+}
+void diskcomparebyteda(){//data, addr
+	//compares byte at addr to data 
+	
+	
+	
+}
+ void disknonfatalerror(){//handles fat non fatal errors
+	 //closes filesystem and goes back to os with a error page
+ }
+ void diskfatalerror(){//fatal error, kernel panic 
+	 //closes filesystem , if keeps on geting called it aborts saving data before panic
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ }
 
- 
- 
  
  
  
