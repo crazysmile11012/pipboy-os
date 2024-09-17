@@ -30,7 +30,8 @@ volatile uint32_t CountDown;
 #define GPS_Y_ADDR 0x0
 //more crap
 int century_register = 0x00;                                // Set by ACPI table parsing code if possible
-
+char tempvar;
+int numlist;
 unsigned char second;
 unsigned char minute;
 unsigned char hour;
@@ -414,10 +415,10 @@ void loop(){
 		
 		//puts(scancode);
 		
-		//printf('u',mouse_x);
+		//printf("%d",mouse_x);
 		//puts("mouse x\r\n");
 		//puts("\r\n");
-		//printf('u',mouse_y);
+		//printf("%d",mouse_y);
 		//puts("mouse y\r\n");
 		//puts("\r\n");
 		scancode = read_scan_code();
@@ -509,7 +510,7 @@ void keyboard_scan_code_to_ascii(char scan_code)
 			//_clear_();
 			//puts("countram \r\n");
 			//countmemory();
-			_asm("sti \r\n");
+			//_asm("sti \r\n");
 			//idt_install();
 			//_asm("INT 0h \r\n");
 			//_asm("INT 1h \r\n");
@@ -532,6 +533,13 @@ void keyboard_scan_code_to_ascii(char scan_code)
 			//keyboard_install();
 			
 			//irq_routines(1);
+			//printf("-***------- FIELD OPERATIONS \r\n");
+			//printf("*-*-*------     ENCLAVE      \r\n");
+			//printf("-***-------                  \r\n");
+			//printf("-----------                  \r\n");
+			//printf("----------- GOD BLESS AMERICA\r\n");
+			printf("program loading test");
+			diskrunfile();
 			lastpage = 8;
 		}
 	
@@ -545,8 +553,12 @@ void keyboard_scan_code_to_ascii(char scan_code)
 			puts("=================================================================#####\r\n");
 	
 			puts("fat 12 driver is a wip");
-			shortbeep();
+			//shortbeep();
+			//fat12init();
 			//debugcrash();
+			//panic("0x69420 skill issue");
+			floppy_calibrate(0x03f0);
+			diskreadbyte();
 			lastpage = 9;
 			
 		}
@@ -635,6 +647,15 @@ void keyboard_scan_code_to_ascii(char scan_code)
 		}
 		if(lastpage == 7){
 			
+		}
+		if(lastpage == 8){
+			tempvar = ascii[scan_code-1];
+			//printf("%d",lastchar);
+
+			lastchar = tempvar;
+			if(lastchar = 'x'){
+			printf("%d",tempvar);
+			}
 		}
 	
 	}
@@ -791,6 +812,7 @@ void driverloader(){
 	irq_install();
 	__asm("sti \r\n");
 	//__asm("int 0x8 \r\n");
+	//fat12init();
 	puts("drivers loaded\r\n");
 };
 void usbtest(){
@@ -953,7 +975,7 @@ int floppy_seek(int base, unsigned cyli, int head){
 		floppy_check_irq(base,&st0,&cyl);
 		if(st0 & 0xc0){
 			static const char * status[] = {"normal", "error", "invalid", "drive"};
-			printf("floppy_seek: status = %s\n", status[st0 >> 6]);
+			//printf("floppy_seek: status = %s\r\n", status[st0 >> 6]);
 			continue;
 		}
 		if(cyl == cyli){
@@ -1389,23 +1411,54 @@ void countmemory(){
  :3
  
  */
+ int i;
 void fat12init(){
-	//checks if floppy driver is good
-	//tell floppy driver to calibrate head
-	//searches for a file alocation table, if not found creates one and continues otherwise it continues
-	//checks if the fat is valid 
-	//calibrates drive again
-	//reads and prints out disk information
-	//file structure dump
-	//adds a cli to cd(dirpath),del(file),edit(file),echo("what to write",file),run(types(b(bin),e(exe),rb(raw binary line by line staticly)),file,int var))
-	//key(esc) to exit otherwise loop
+	ReceivedIRQ = true;
+	/*
+	checks if floppy driver is good
+	tell floppy driver to calibrate head
+	searches for a file alocation table, if not found creates one and continues otherwise it continues
+	checks if the fat is valid 
+	calibrates drive again
+	reads and prints out disk information
+	file structure dump
+	adds a cli to cd(dirpath),del(file),edit(file),echo("what to write",file),run(types(b(bin),e(exe),rb(raw binary line by line staticly)),file,int var))
+	key(esc) to exit otherwise loop
+	https://en.wikipedia.org/wiki/Cylinder-head-sector
+	uses chs
+	*/
+	floppy_calibrate(base);
+	printf(floppy_seek(base,0,0));//base cyl head
+	//512 byte/sector,63 sector/track,255 heads,1024 cyl
+	// 8064 bytes (8gb total)
 	
+	i =0x0;
+	//int flopreadint;
+	for (i=0x0;i<0x7E;i++){
+		floppy_motor(base,floppy_motor_on);
+		floppy_seek(base,i,0);
+		puts("cyl:");
+		printf("%d",i);
+		puts("\r\n");
+		puts("data:");
+		printf("%d",floppy_read_data(base));
+		puts("\r\n");
+		floppy_motor(base,floppy_motor_off);
+	}
 	
+
 }
-char diskreadbyte(){//returns data at paramater's location
+void diskreadbyte(){//returns data at paramater's location
+	puts("\r\n");
+	puts("read:");
+	printf("%d",floppy_read_data(base));
+	puts("\r\n");
+	puts("base:");
+	printf("%d",base);
+	puts("\r\n");
+	puts("read-base:");
+	printf("%d",floppy_read_data(base)-base);
 	
-	
-	return;
 }
 void diskwritebyte(){//writes byte specified at address specified
 	
@@ -1434,14 +1487,45 @@ void diskcomparebyteda(){//data, addr
  }
  void diskfatalerror(){//fatal error, kernel panic 
 	 //closes filesystem , if keeps on geting called it aborts saving data before panic
- 
- 
- 
- 
- 
- 
- 
  }
+void diskrunfile(){
+	int buffer;
+	char prog;
+	_asm{
+		
+		 DL = 01h	
+		 AH = 02h;
+		 Al = 255;
+		 CH = 0
+		 CL = 01h
+		 DH = 0
+		 ES = 0
+		 MOV BX, 0x7C00
+		 
+		 //LD = 01h
+		 //MOV buffer, AL
+		 //call puts
+		 INT 13h; 
+		 //mov prog, 7e00h
+		 mov si, bx
+		 call puts
+		//jmp bx;
+		//times 510-($-$$) db 0
+		//dw 0x0AA55
+		 mov buffer, bx;
+	}
+	puts("\r\n");
+	printf("%d",buffer);
+					
+	
+}
+
+ 
+ 
+ 
+ 
+ 
+
 
  
  
